@@ -1,4 +1,3 @@
-import math
 from itertools import product
 
 def get_next(x, y):
