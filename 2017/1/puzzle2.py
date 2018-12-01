@@ -9,4 +9,4 @@ with open("2017/1/input.txt", "r") as f:
         if n0 == n1:
             s += n0
 
-    print s
+    print(s)

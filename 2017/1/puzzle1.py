@@ -10,4 +10,4 @@ with open("2017/1/input.txt", "r") as f:
             s += n0
         prev = n0
 
-    print s
+    print(s)

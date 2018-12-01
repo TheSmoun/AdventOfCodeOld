@@ -9,14 +9,14 @@ class Square:
         self.n = number
     
     def get_corners(self):
-        print self.n
+        print(self.n)
         if self.n == 1:
             yield 1
         
         for i in range(-4, 1):
             yield self.n * self.n + i * (self.n - 1)
 
-print list(Square(3).get_corners())
+print(list(Square(3).get_corners()))
 
 """
 147  142  133  122   59
