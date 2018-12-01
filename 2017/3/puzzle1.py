@@ -12,7 +12,7 @@ prev = (s - 2) * (s - 2)
 
 for corner in corners:
     if number >= prev and number <= corner:
-        print int(square + math.fabs(number - (corner + prev) / 2))
+        print(int(square + math.fabs(number - (corner + prev) / 2)))
         break
     else:
         prev = corner

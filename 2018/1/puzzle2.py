@@ -1,13 +1,6 @@
-from itertools import cycle
+from itertools import accumulate, cycle
 
 with open("2018/1/input.txt", "r") as f:
     numbers = [int(line) for line in f.readlines()]
-    seen_frequencies = set([0])
-    prev = 0
-    for n in cycle(numbers):
-        prev += n
-        if prev in seen_frequencies:
-            print prev
-            break
-        else:
-            seen_frequencies.add(prev)
+    seen = set([0])
+    print(next(n for n in accumulate(cycle(numbers)) if n in seen or seen.add(n)))
