@@ -1,33 +1,19 @@
 import math
 
 number = 289326
-numbers = {1: 1, 15: 133}
+numbers = {(0, 0): 1}
 
-class Square:
+def get_next(x, y):
+    if x == 0 and y == 0: return (1, 0)
+    if x > y and y > -x: return (x, y + 1)
+    if y > -x and y >= x: return (x - 1, y)
+    if y <= -x and x < y: return (x, y - 1)
+    if y <= -x and x >= y: return (x + 1, y)
 
-    def __init__(self, number):
-        self.n = number
-    
-    def get_corners(self):
-        print(self.n)
-        if self.n == 1:
-            yield 1
-        
-        for i in range(-4, 1):
-            yield self.n * self.n + i * (self.n - 1)
+x = 0
+y = 0
+while numbers[(x, y)] <= number:
+    x, y = get_next(x, y)
+    numbers[(x, y)] = sum(numbers.get((x + i, y + j), 0) for i in [-1, 0, 1] for j in [0, 1, -1])
 
-print(list(Square(3).get_corners()))
-
-"""
-147  142  133  122   59
-304    5    4    2   57
-330   10    1    1   54
-351   11   23   25   26
-362  747  806--->   ...
-
-17  16  15  14  13
-18   5   4   3  12
-19   6   1   2  11
-20   7   8   9  10
-21  22  23---> ...
-"""
+print(numbers[(x, y)])
