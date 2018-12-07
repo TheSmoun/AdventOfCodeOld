@@ -33,7 +33,6 @@ with open("2018/7/input.txt", "r") as f:
     todo.sort()
     todo.reverse()
     while len(todo) > 0:
-        print(workers)
         for i in range(len(workers)):
             worker = workers[i]
             worker[0] = max(worker[0] - 1, 0)
