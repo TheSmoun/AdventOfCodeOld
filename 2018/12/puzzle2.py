@@ -4,8 +4,7 @@ with open("2018/12/input.txt", "r") as f:
     length = len(state)
     rules = {i:o for (i, o) in map(lambda l: l.split(" => "), lines[1:])}
     
-    diff = (len(state) - length) // 2
-    start = sum(i - diff for i, c in enumerate(state) if c == "#")
+    start = sum(i for i, c in enumerate(state) if c == "#")
     prev = start
     diffs = []
     for _ in range(100):
