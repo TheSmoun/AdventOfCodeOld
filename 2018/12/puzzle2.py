@@ -1,5 +1,3 @@
-from collections import deque
-
 with open("2018/12/input.txt", "r") as f:
     lines = [line.strip() for line in f.readlines() if len(line.strip()) > 0]
     state = lines[0].split(" ")[-1]
