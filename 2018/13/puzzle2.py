@@ -63,14 +63,21 @@ with open("2018/13/input.txt", "r") as f:
     lines = [line for line in f.readlines()]
     tracks = defaultdict(lambda: "", {(x, y): c for y, l in enumerate(lines) for x, c in enumerate(l) if c in "/\\+"})
     carts = [Cart((x, y), Direction(c)) for y, l in enumerate(lines) for x, c in enumerate(l) if c in "^v<>"]
-    
-    while not any(cart.crashed for cart in carts):
+
+    while len(carts) > 1:
         carts.sort(key=lambda c: c.position)
         for i, cart in enumerate(carts):
+            if cart.crashed:
+                continue
+
             cart.move()
             cart.turn(tracks[cart.position])
-            if any(cart.position == c.position for j, c in enumerate(carts) if i != j):
-                cart.crashed = True
-                break
+            for j, c in enumerate(carts):
+                if i != j and cart.position == c.position and not c.crashed:
+                    cart.crashed = True
+                    c.crashed = True
+                    break
+        
+        carts = [cart for cart in carts if not cart.crashed]
     
-    print(next(c.position for c in carts if c.crashed))
+    print(carts[0].position)
