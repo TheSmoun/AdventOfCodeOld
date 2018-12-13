@@ -2,24 +2,10 @@ from collections import defaultdict
 
 class Direction:
     def __init__(self, char):
-        if char == ">":
-            self.direction = 0
-        elif char == "^":
-            self.direction = 1
-        elif char == "<":
-            self.direction = 2
-        elif char == "v":
-            self.direction = 3
+        self.direction = {">": 0, "^": 1, "<": 2, "v": 3}[char]
     
     def get_tuple(self):
-        if self.direction == 0:
-            return (1, 0)
-        if self.direction == 1:
-            return (0, -1)
-        if self.direction == 2:
-            return (-1, 0)
-        if self.direction == 3:
-            return (0, 1)
+        return {0: (1, 0), 1: (0, -1), 2: (-1, 0), 3: (0, 1)}[self.direction]
 
     def move(self, position):
         t = self.get_tuple()
