@@ -13,14 +13,6 @@ class Point(NamedTuple("Point", [("x", int), ("y", int)])):
     def up(self):
         return self + Point(0, -1)
 
-    @property
-    def left(self):
-        return self + Point(-1, 0)
-    
-    @property
-    def right(self):
-        return self + Point(1, 0)
-
 spring = Point(500, 0)
 left = Point(-1, 0)
 right = Point(1, 0)
