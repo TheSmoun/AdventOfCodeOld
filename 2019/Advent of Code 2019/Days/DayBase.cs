@@ -47,7 +47,7 @@ namespace AoC2019.Days
             Console.WriteLine();
         }
 
-        private static Tuple<TParam, long> Measure<TParam>(Func<TParam> function)
+        private static (TParam, long) Measure<TParam>(Func<TParam> function)
         {
             var stopwatch = new Stopwatch();
 
@@ -55,7 +55,7 @@ namespace AoC2019.Days
             var result = function();
             stopwatch.Stop();
 
-            return Tuple.Create(result, stopwatch.ElapsedTicks);
+            return (result, stopwatch.ElapsedTicks);
         }
 
         private static string FormatTime(long ticks)
