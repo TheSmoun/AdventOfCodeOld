@@ -11,7 +11,7 @@ namespace AoC2019.Days
         public abstract void Run();
     }
 
-    public abstract class DayBase<TInput> : DayBase
+    public abstract class DayBase<TInput, TResult> : DayBase
     {
         private const long TicksPerMillisecond = 10000;
         private const string InputFolderName = "Inputs";
@@ -36,13 +36,13 @@ namespace AoC2019.Days
             Console.WriteLine();
         }
 
-        private void RunPart(string name, Func<TInput, string> partFunction, IEnumerable<string> lines)
+        private void RunPart(string name, Func<TInput, TResult> partFunction, IEnumerable<string> lines)
         {
             var (input, ti) = Measure(() => ParseInput(lines));
             var (result, tr) = Measure(() => partFunction(input));
 
             Console.Write($"-> {name}: ");
-            ConsoleEx.WriteColoredLine(result, ConsoleColor.Cyan);
+            ConsoleEx.WriteColoredLine($"{result}", ConsoleColor.Cyan);
             Console.WriteLine($"   Input: {FormatTime(ti)}, {name}: {FormatTime(tr)}, Total: {FormatTime(ti + tr)}");
             Console.WriteLine();
         }
@@ -80,7 +80,7 @@ namespace AoC2019.Days
 
         protected abstract string Name { get; }
         protected abstract TInput ParseInput(IEnumerable<string> lines);
-        protected abstract string RunPart1(TInput input);
-        protected abstract string RunPart2(TInput input);
+        protected abstract TResult RunPart1(TInput input);
+        protected abstract TResult RunPart2(TInput input);
     }
 }
