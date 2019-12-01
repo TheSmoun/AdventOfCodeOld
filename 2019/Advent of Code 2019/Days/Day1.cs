@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AoC2019.Extensions;
 
 namespace AoC2019.Days
 {
@@ -15,29 +16,14 @@ namespace AoC2019.Days
 
         protected override int RunPart1(IEnumerable<int> input)
         {
-            return input.Select(CalcFuel).Sum();
+            return input.Select(Fuel).Sum();
         }
 
         protected override int RunPart2(IEnumerable<int> input)
         {
-            var fuelMasses = new List<int>();
-
-            foreach (var moduleMass in input)
-            {
-                var masses = new LinkedList<int>();
-                masses.AddLast(moduleMass);
-
-                while (masses.Last.Value > 0)
-                {
-                    masses.AddLast(Math.Max(0, CalcFuel(masses.Last.Value)));
-                }
-
-                fuelMasses.Add(masses.Skip(1).Sum());
-            }
-
-            return fuelMasses.Sum();
+            return input.Select(m => Fuel(m).Sequence(Fuel).TakeWhile(f => f > 0).Sum()).Sum();
         }
 
-        private static int CalcFuel(int moduleMass) => moduleMass / 3 - 2;
+        private static int Fuel(int moduleMass) => moduleMass / 3 - 2;
     }
 }
