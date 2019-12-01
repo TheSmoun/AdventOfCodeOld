@@ -16,12 +16,12 @@ namespace AoC2019.Days
 
         protected override int RunPart1(IEnumerable<int> input)
         {
-            return input.Select(Fuel).Sum();
+            return input.Sum(Fuel);
         }
 
         protected override int RunPart2(IEnumerable<int> input)
         {
-            return input.Select(m => Fuel(m).Sequence(Fuel).TakeWhile(f => f > 0).Sum()).Sum();
+            return input.Sum(m => Fuel(m).Sequence(Fuel).TakeWhile(f => f > 0).Sum());
         }
 
         private static int Fuel(int moduleMass) => moduleMass / 3 - 2;
