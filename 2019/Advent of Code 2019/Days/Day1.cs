@@ -11,7 +11,7 @@ namespace AoC2019.Days
 
         protected override IEnumerable<int> ParseInput(IEnumerable<string> lines)
         {
-            return lines.Select(l => Convert.ToInt32(l));
+            return lines.Select(int.Parse);
         }
 
         protected override int RunPart1(IEnumerable<int> input)
