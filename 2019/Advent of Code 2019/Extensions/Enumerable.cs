@@ -7,18 +7,6 @@ namespace AoC2019.Extensions
 {
     public static class EnumerableEx
     {
-        public static IEnumerable<T> Cycle<T>(this IEnumerable<T> input)
-        {
-            var enumerable = input as T[] ?? input.ToArray();
-            while (true)
-            {
-                foreach (var t in enumerable)
-                {
-                    yield return t;
-                }
-            }
-        }
-
         public static IEnumerable<T> Sequence<T>(this T start, Func<T, T> f)
         {
             yield return start;
