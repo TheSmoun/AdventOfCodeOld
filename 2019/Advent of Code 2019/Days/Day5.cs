@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AoC2019.Lib;
+using AoC2019.Extensions;
 
 namespace AoC2019.Days
 {
@@ -15,12 +15,12 @@ namespace AoC2019.Days
 
         protected override int RunPart1(int[] input)
         {
-            return new IntComputer(input, new Queue<int>(new[] {1})).Run();
+            return input.ToIntComputer(1).Run();
         }
 
         protected override int RunPart2(int[] input)
         {
-            return new IntComputer(input, new Queue<int>(new[] {5})).Run();
+            return input.ToIntComputer(5).Run();
         }
     }
 }

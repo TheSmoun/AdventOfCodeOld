@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -9,12 +10,12 @@ namespace AoC2019.Lib
     {
         private readonly int[] _memory;
         private readonly Dictionary<int, Instruction> _instructions;
-        private readonly Queue<int> _input;
-        private readonly Queue<int> _output;
+        private readonly BlockingCollection<int> _input;
+        private readonly BlockingCollection<int> _output;
 
         public int LastOutput { get; private set; }
 
-        public IntComputer(IEnumerable<int> memory, Queue<int> input, Queue<int> output = null)
+        public IntComputer(IEnumerable<int> memory, BlockingCollection<int> input, BlockingCollection<int> output = null)
         {
             _memory = memory.ToArray();
             _instructions = new Dictionary<int, Instruction>
@@ -60,14 +61,14 @@ namespace AoC2019.Lib
                 Thread.Sleep(1);
             }
 
-            _memory[_memory[ip + 1]] = _input.Dequeue();
+            _memory[_memory[ip + 1]] = _input.Take();
             return ip + 2;
         }
 
         private int Output(int ip, int a, int b)
         {
             LastOutput = GetValue(_memory, _memory[ip + 1], a);
-            _output?.Enqueue(LastOutput);
+            _output?.Add(LastOutput);
             return ip + 2;
         }
 

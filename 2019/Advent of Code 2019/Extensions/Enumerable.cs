@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using AoC2019.Days;
+using AoC2019.Lib;
 
 namespace AoC2019.Extensions
 {
@@ -17,6 +19,16 @@ namespace AoC2019.Extensions
                 value = f(value);
                 yield return value;
             }
+        }
+
+        public static IntComputer ToIntComputer(this IEnumerable<int> memory, params int[] input)
+        {
+            return new IntComputer(memory, BlockingCollection(input));
+        }
+
+        public static BlockingCollection<T> BlockingCollection<T>(params T[] input)
+        {
+            return new BlockingCollection<T>(new ConcurrentQueue<T>(input));
         }
 
         public static DayBase Day(this IEnumerable<DayBase> input, int number)

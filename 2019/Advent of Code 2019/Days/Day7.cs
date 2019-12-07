@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using AoC2019.Extensions;
 using AoC2019.Lib;
 using MoreLinq;
 
@@ -19,7 +20,7 @@ namespace AoC2019.Days
         protected override int RunPart1(int[] input)
         {
             return Enumerable.Range(0, 5).Permutations()
-                .Max(p => p.Aggregate(0, (current, c) => new IntComputer(input, new Queue<int>(new[] {c, current})).Run()));
+                .Max(p => p.Aggregate(0, (current, c) => input.ToIntComputer(c, current).Run()));
         }
 
         protected override int RunPart2(int[] input)
@@ -27,11 +28,11 @@ namespace AoC2019.Days
             var max = 0;
             foreach (var permutation in Enumerable.Range(5, 5).Permutations())
             {
-                var eToA = new Queue<int>(new[] {permutation[0], 0});
-                var aToB = new Queue<int>(new[] {permutation[1]});
-                var bToC = new Queue<int>(new[] {permutation[2]});
-                var cToD = new Queue<int>(new[] {permutation[3]});
-                var dToE = new Queue<int>(new[] {permutation[4]});
+                var eToA = EnumerableEx.BlockingCollection(permutation[0], 0);
+                var aToB = EnumerableEx.BlockingCollection(permutation[1]);
+                var bToC = EnumerableEx.BlockingCollection(permutation[2]);
+                var cToD = EnumerableEx.BlockingCollection(permutation[3]);
+                var dToE = EnumerableEx.BlockingCollection(permutation[4]);
 
                 var ampA = new IntComputer(input, eToA, aToB);
                 var ampB = new IntComputer(input, aToB, bToC);
