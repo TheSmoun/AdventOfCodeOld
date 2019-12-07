@@ -6,21 +6,21 @@ namespace AoC2019.Days
 {
     public sealed class Day2 : DayBase<int[], int>
     {
-        protected override string Name => "Day 2: 1202 Program Alarm";
+        public override string Name => "Day 2: 1202 Program Alarm";
 
-        protected override int[] ParseInput(IEnumerable<string> lines)
+        public override int[] ParseInput(IEnumerable<string> lines)
         {
             return lines.Single().Split(",").Select(int.Parse).ToArray();
         }
 
-        protected override int RunPart1(int[] input)
+        public override int RunPart1(int[] input)
         {
             input[1] = 12;
             input[2] = 2;
             return RunIntComputer(input);
         }
 
-        protected override int RunPart2(int[] input)
+        public override int RunPart2(int[] input)
         {
             for (var noun = 0; noun < 100; noun++)
             {

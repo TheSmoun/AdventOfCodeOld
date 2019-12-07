@@ -9,20 +9,20 @@ namespace AoC2019.Days
 {
     public sealed class Day7 : DayBase<int[], int>
     {
-        protected override string Name => "Day 7: Amplification Circuit";
+        public override string Name => "Day 7: Amplification Circuit";
 
-        protected override int[] ParseInput(IEnumerable<string> lines)
+        public override int[] ParseInput(IEnumerable<string> lines)
         {
             return lines.Single().Split(",").Select(int.Parse).ToArray();
         }
 
-        protected override int RunPart1(int[] input)
+        public override int RunPart1(int[] input)
         {
             return Enumerable.Range(0, 5).Permutations()
                 .Max(p => p.Aggregate(0, (current, c) => input.ToIntComputer(c, current).Run()));
         }
 
-        protected override int RunPart2(int[] input)
+        public override int RunPart2(int[] input)
         {
             return Enumerable.Range(5, 5).Permutations().Max(permutation =>
             {

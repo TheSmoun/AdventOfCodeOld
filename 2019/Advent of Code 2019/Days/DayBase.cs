@@ -36,6 +36,11 @@ namespace AoC2019.Days
             Console.WriteLine();
         }
 
+        public TInput ParseInput()
+        {
+            return ParseInput(File.ReadAllLines(_inputFileName));
+        }
+
         private void RunPart(string name, Func<TInput, TResult> partFunction, IEnumerable<string> lines)
         {
             var (input, ti) = Measure(() => ParseInput(lines));
@@ -78,9 +83,9 @@ namespace AoC2019.Days
             return ts.TotalHours.ToString("##.## 'h'");
         }
 
-        protected abstract string Name { get; }
-        protected abstract TInput ParseInput(IEnumerable<string> lines);
-        protected abstract TResult RunPart1(TInput input);
-        protected abstract TResult RunPart2(TInput input);
+        public abstract string Name { get; }
+        public abstract TInput ParseInput(IEnumerable<string> lines);
+        public abstract TResult RunPart1(TInput input);
+        public abstract TResult RunPart2(TInput input);
     }
 }

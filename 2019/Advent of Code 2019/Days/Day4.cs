@@ -6,20 +6,20 @@ namespace AoC2019.Days
 {
     public sealed class Day4 : DayBase<(int, int), int>
     {
-        protected override string Name => "Day 4: Secure Container";
+        public override string Name => "Day 4: Secure Container";
 
-        protected override (int, int) ParseInput(IEnumerable<string> lines)
+        public override (int, int) ParseInput(IEnumerable<string> lines)
         {
             var numbers = lines.Single().Split("-").Select(int.Parse).ToArray();
             return (numbers[0], numbers[1]);
         }
 
-        protected override int RunPart1((int, int) input)
+        public override int RunPart1((int, int) input)
         {
             return GetCandidates(input).Count(s => s.GroupAdjacent(c => c).Any(c => c.Count() >= 2));
         }
 
-        protected override int RunPart2((int, int) input)
+        public override int RunPart2((int, int) input)
         {
             return GetCandidates(input).Count(s => s.GroupAdjacent(c => c).Any(c => c.Count() == 2));
         }

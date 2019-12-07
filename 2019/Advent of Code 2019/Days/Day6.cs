@@ -5,9 +5,9 @@ namespace AoC2019.Days
 {
     public sealed class Day6 : DayBase<Dictionary<string, Day6.Orbit>, int>
     {
-        protected override string Name => "Day 6: Universal Orbit Map";
+        public override string Name => "Day 6: Universal Orbit Map";
 
-        protected override Dictionary<string, Orbit> ParseInput(IEnumerable<string> lines)
+        public override Dictionary<string, Orbit> ParseInput(IEnumerable<string> lines)
         {
             var orbits = new Dictionary<string, Orbit>();
             foreach (var (parent, orbiter) in lines.Select(l => l.Split(")")).Select(l => (l[0], l[1])))
@@ -23,12 +23,12 @@ namespace AoC2019.Days
             return orbits;
         }
 
-        protected override int RunPart1(Dictionary<string, Orbit> input)
+        public override int RunPart1(Dictionary<string, Orbit> input)
         {
             return input["COM"].CountIndirectOrbits();
         }
 
-        protected override int RunPart2(Dictionary<string, Orbit> input)
+        public override int RunPart2(Dictionary<string, Orbit> input)
         {
             var sanPath = input["SAN"].Path;
             var youPath = input["YOU"].Path;
