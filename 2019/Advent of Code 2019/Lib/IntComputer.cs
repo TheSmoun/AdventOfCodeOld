@@ -56,11 +56,6 @@ namespace AoC2019.Lib
 
         private int Input(int ip, int a, int b)
         {
-            while (_input.Count == 0)
-            {
-                Thread.Sleep(1);
-            }
-
             _memory[_memory[ip + 1]] = _input.Take();
             return ip + 2;
         }
