@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using MoreLinq;
 
 namespace AoC2019.Days
@@ -17,26 +18,54 @@ namespace AoC2019.Days
         protected override int RunPart1(int[] input)
         {
             return Enumerable.Range(0, 5).Permutations()
-                .Select(p => p.Aggregate(0, (current, c) => new Amplifier(input, c, current).Run()))
-                .Max();
+                .Max(p => p.Aggregate(0, (current, c) => new Amplifier(input, new Queue<int>(new[] {c, current})).Run()));
         }
 
         protected override int RunPart2(int[] input)
         {
-            return 0;
+            var max = 0;
+            foreach (var permutation in Enumerable.Range(5, 5).Permutations())
+            {
+                var eToA = new Queue<int>(new[] {permutation[0], 0});
+                var aToB = new Queue<int>(new[] {permutation[1]});
+                var bToC = new Queue<int>(new[] {permutation[2]});
+                var cToD = new Queue<int>(new[] {permutation[3]});
+                var dToE = new Queue<int>(new[] {permutation[4]});
+
+                var ampA = new Amplifier(input, eToA, aToB);
+                var ampB = new Amplifier(input, aToB, bToC);
+                var ampC = new Amplifier(input, bToC, cToD);
+                var ampD = new Amplifier(input, cToD, dToE);
+                var ampE = new Amplifier(input, dToE, eToA);
+
+                var threads = new[]
+                {
+                    new Thread(() => ampA.Run()), 
+                    new Thread(() => ampB.Run()), 
+                    new Thread(() => ampC.Run()), 
+                    new Thread(() => ampD.Run()), 
+                    new Thread(() => ampE.Run())
+                };
+
+                threads.ForEach(t => t.Start());
+                threads.ForEach(t => t.Join());
+
+                max = Math.Max(max, ampE.LastOutput);
+            }
+
+            return max;
         }
 
         private class Amplifier
         {
             private readonly int[] _memory;
             private readonly Dictionary<int, Instruction> _instructions;
-            private readonly int _mode;
-            private readonly int _input;
+            private readonly Queue<int> _input;
+            private readonly Queue<int> _output;
 
-            private bool _modeRead;
-            private int _output;
+            public int LastOutput { get; private set; }
 
-            public Amplifier(IEnumerable<int> memory, int mode, int input)
+            public Amplifier(IEnumerable<int> memory, Queue<int> input, Queue<int> output = null)
             {
                 _memory = memory.ToArray();
                 _instructions = new Dictionary<int, Instruction>
@@ -45,8 +74,8 @@ namespace AoC2019.Days
                     {5, JumpIfTrue}, {6, JumpIfFalse}, {7, LessThan}, {8, Equals},
                     {99, Halt}
                 };
-                _mode = mode;
                 _input = input;
+                _output = output;
             }
 
             public int Run()
@@ -60,7 +89,7 @@ namespace AoC2019.Days
                     postIp = _instructions[opCode](ip, a, b);
                 } while (ip != postIp);
 
-                return _output;
+                return LastOutput;
             }
 
             private int Add(int ip, int a, int b)
@@ -77,24 +106,19 @@ namespace AoC2019.Days
 
             private int Input(int ip, int a, int b)
             {
-                int input;
-                if (_modeRead)
+                while (_input.Count == 0)
                 {
-                    input = _input;
-                }
-                else
-                {
-                    input = _mode;
-                    _modeRead = true;
+                    Thread.Sleep(50);
                 }
 
-                _memory[_memory[ip + 1]] = input;
+                _memory[_memory[ip + 1]] = _input.Dequeue();
                 return ip + 2;
             }
 
             private int Output(int ip, int a, int b)
             {
-                _output = GetValue(_memory, _memory[ip + 1], a);
+                LastOutput = GetValue(_memory, _memory[ip + 1], a);
+                _output?.Enqueue(LastOutput);
                 return ip + 2;
             }
 
