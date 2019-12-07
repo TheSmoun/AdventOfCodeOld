@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using AoC2019.Extensions;
@@ -25,8 +24,7 @@ namespace AoC2019.Days
 
         protected override int RunPart2(int[] input)
         {
-            var max = 0;
-            foreach (var permutation in Enumerable.Range(5, 5).Permutations())
+            return Enumerable.Range(5, 5).Permutations().Max(permutation =>
             {
                 var eToA = EnumerableEx.BlockingCollection(permutation[0], 0);
                 var aToB = EnumerableEx.BlockingCollection(permutation[1]);
@@ -42,20 +40,18 @@ namespace AoC2019.Days
 
                 var threads = new[]
                 {
-                    new Thread(() => ampA.Run()), 
-                    new Thread(() => ampB.Run()), 
-                    new Thread(() => ampC.Run()), 
-                    new Thread(() => ampD.Run()), 
+                    new Thread(() => ampA.Run()),
+                    new Thread(() => ampB.Run()),
+                    new Thread(() => ampC.Run()),
+                    new Thread(() => ampD.Run()),
                     new Thread(() => ampE.Run())
                 };
 
                 threads.ForEach(t => t.Start());
                 threads.ForEach(t => t.Join());
 
-                max = Math.Max(max, ampE.LastOutput);
-            }
-
-            return max;
+                return ampE.LastOutput;
+            });
         }
     }
 }
