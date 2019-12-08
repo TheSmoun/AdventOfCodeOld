@@ -10,5 +10,12 @@ namespace AoC2019.Extensions
             Console.WriteLine(line);
             Console.ResetColor();
         }
+
+        public static void WriteColored(string s, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(s);
+            Console.ResetColor();
+        }
     }
 }
