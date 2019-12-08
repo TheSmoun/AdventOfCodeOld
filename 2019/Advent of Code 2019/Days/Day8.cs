@@ -41,22 +41,8 @@ namespace AoC2019.Days
 
         public override string RunPart1(List<int[,]> input)
         {
-            var i = 0;
-            var min = int.MaxValue;
-            var minLayer = 0;
-            foreach (var zeros in input.Select(l => l.Cast<int>()).Select(px => px.Count(p => p == 0)))
-            {
-                if (zeros < min)
-                {
-                    min = zeros;
-                    minLayer = i;
-                }
-
-                i++;
-            }
-
-            var layer = input[minLayer].Cast<int>().ToList();
-            return (layer.Count(p => p == 1) * layer.Count(p => p == 2)).ToString();
+            var minLayer = input.Select(l => l.Cast<int>()).MinBy(l => l.Count(p => p == 0)).First().ToList();
+            return (minLayer.Count(p => p == 1) * minLayer.Count(p => p == 2)).ToString();
         }
 
         public override string RunPart2(List<int[,]> input)
