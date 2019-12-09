@@ -59,4 +59,11 @@ namespace AoC2019.Tests
         protected override string ExpectedPart1Result => "1596";
         protected override string ExpectedPart2Result => "LBRCE";
     }
+
+    [TestClass]
+    public sealed class Day9Tests : DayTestBase<Day9, long[], long>
+    {
+        protected override long ExpectedPart1Result => 3454977209;
+        protected override long ExpectedPart2Result => 50120;
+    }
 }
