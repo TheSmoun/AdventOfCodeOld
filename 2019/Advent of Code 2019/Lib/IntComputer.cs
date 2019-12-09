@@ -71,7 +71,6 @@ namespace AoC2019.Lib
         {
             LastOutput = Load(_memory[ip + 1], a);
             _output?.Add(LastOutput);
-            Console.WriteLine(LastOutput);
             return ip + 2;
         }
 
