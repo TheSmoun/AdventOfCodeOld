@@ -21,7 +21,13 @@ namespace AoC2019.Extensions
             }
         }
 
-        public static IntComputer ToIntComputer(this IEnumerable<int> memory, params int[] input)
+        public static IEnumerable<long> Range(long start, long count)
+        {
+            for (var i = 0; i < count; i++)
+                yield return start + i;
+        }
+
+        public static IntComputer ToIntComputer(this IEnumerable<long> memory, params long[] input)
         {
             return new IntComputer(memory, BlockingCollection(input));
         }

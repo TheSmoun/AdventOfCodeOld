@@ -4,9 +4,9 @@ using AoC2019.Extensions;
 
 namespace AoC2019.Days
 {
-    public sealed class Day5 : DayBase<long[], long>
+    public sealed class Day9 : DayBase<long[], long>
     {
-        public override string Name => "Day 5: Sunny with a Chance of Asteroids";
+        public override string Name => "Day 9: Sensor Boost";
 
         public override long[] ParseInput(IEnumerable<string> lines)
         {
@@ -20,7 +20,7 @@ namespace AoC2019.Days
 
         public override long RunPart2(long[] input)
         {
-            return input.ToIntComputer(5).Run();
+            return input.ToIntComputer(2).Run();
         }
     }
 }
