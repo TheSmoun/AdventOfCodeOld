@@ -52,7 +52,7 @@ namespace AoC2019.Days
                 for (var x = 0; x < ImageWidth; x++)
                 {
                     var pixel = input.Select(l => l[y, x]).First(p => p != 2);
-                    ConsoleEx.WriteColored("#", pixel == 0 ? ConsoleColor.Black : ConsoleColor.White);
+                    Console.Write(pixel == 0 ? " " : "#");
                 }
 
                 Console.WriteLine();
