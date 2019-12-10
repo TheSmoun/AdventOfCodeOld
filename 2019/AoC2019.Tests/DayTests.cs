@@ -33,10 +33,10 @@ namespace AoC2019.Tests
     }
 
     [TestClass]
-    public sealed class Day5Tests : DayTestBase<Day5, int[], int>
+    public sealed class Day5Tests : DayTestBase<Day5, long[], long>
     {
-        protected override int ExpectedPart1Result => 9775037;
-        protected override int ExpectedPart2Result => 15586959;
+        protected override long ExpectedPart1Result => 9775037;
+        protected override long ExpectedPart2Result => 15586959;
     }
 
     [TestClass]
@@ -47,10 +47,10 @@ namespace AoC2019.Tests
     }
 
     [TestClass]
-    public sealed class Day7Tests : DayTestBase<Day7, int[], int>
+    public sealed class Day7Tests : DayTestBase<Day7, long[], long>
     {
-        protected override int ExpectedPart1Result => 30940;
-        protected override int ExpectedPart2Result => 76211147;
+        protected override long ExpectedPart1Result => 30940;
+        protected override long ExpectedPart2Result => 76211147;
     }
 
     [TestClass]
@@ -58,5 +58,12 @@ namespace AoC2019.Tests
     {
         protected override string ExpectedPart1Result => "1596";
         protected override string ExpectedPart2Result => "LBRCE";
+    }
+
+    [TestClass]
+    public sealed class Day9Tests : DayTestBase<Day9, long[], long>
+    {
+        protected override long ExpectedPart1Result => 3454977209;
+        protected override long ExpectedPart2Result => 50120;
     }
 }

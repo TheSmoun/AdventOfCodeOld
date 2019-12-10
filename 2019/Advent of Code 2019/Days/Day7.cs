@@ -7,24 +7,24 @@ using MoreLinq;
 
 namespace AoC2019.Days
 {
-    public sealed class Day7 : DayBase<int[], int>
+    public sealed class Day7 : DayBase<long[], long>
     {
         public override string Name => "Day 7: Amplification Circuit";
 
-        public override int[] ParseInput(IEnumerable<string> lines)
+        public override long[] ParseInput(IEnumerable<string> lines)
         {
-            return lines.Single().Split(",").Select(int.Parse).ToArray();
+            return lines.Single().Split(",").Select(long.Parse).ToArray();
         }
 
-        public override int RunPart1(int[] input)
+        public override long RunPart1(long[] input)
         {
-            return Enumerable.Range(0, 5).Permutations()
-                .Max(p => p.Aggregate(0, (current, c) => input.ToIntComputer(c, current).Run()));
+            return EnumerableEx.Range(0, 5).Permutations()
+                .Max(p => p.Aggregate(0L, (current, c) => input.ToIntComputer(c, current).Run()));
         }
 
-        public override int RunPart2(int[] input)
+        public override long RunPart2(long[] input)
         {
-            return Enumerable.Range(5, 5).Permutations().Max(permutation =>
+            return EnumerableEx.Range(5, 5).Permutations().Max(permutation =>
             {
                 var eToA = EnumerableEx.BlockingCollection(permutation[0], 0);
                 var aToB = EnumerableEx.BlockingCollection(permutation[1]);
