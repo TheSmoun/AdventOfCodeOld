@@ -37,6 +37,17 @@ namespace AoC2019.Extensions
             return new BlockingCollection<T>(new ConcurrentQueue<T>(input));
         }
 
+        public static Queue<T> ToQueue<T>(this IEnumerable<T> input)
+        {
+            return new Queue<T>(input);
+        }
+
+        public static IEnumerable<T> DequeueOnce<T>(Queue<T> input)
+        {
+            if (input.Count > 0)
+                yield return input.Dequeue();
+        }
+
         public static DayBase Day(this IEnumerable<DayBase> input, int number)
         {
             if (number < 1 || number > 25)
