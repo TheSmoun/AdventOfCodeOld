@@ -15,6 +15,7 @@ namespace AoC2019.Lib
         private long _relativeBase;
 
         public long LastOutput { get; private set; }
+        public bool Running { get; private set; }
 
         public IntComputer(IEnumerable<long> memory, BlockingCollection<long> input, BlockingCollection<long> output = null)
         {
@@ -37,6 +38,7 @@ namespace AoC2019.Lib
 
         public long Run()
         {
+            Running = true;
             int ip;
             var postIp = 0;
             do
@@ -46,6 +48,7 @@ namespace AoC2019.Lib
                 postIp = _instructions[opCode](ip, a, b, c);
             } while (ip != postIp);
 
+            Running = false;
             return LastOutput;
         }
 

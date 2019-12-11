@@ -8,7 +8,7 @@ namespace AoC2019.Days
 {
     public sealed class Day10 : DayBase<List<(int X, int Y)>, int>
     {
-        public override string Name => "Day 9: Sensor Boost";
+        public override string Name => "Day 10: Monitoring Station";
 
         public override List<(int X, int Y)> ParseInput(IEnumerable<string> lines)
         {
@@ -46,12 +46,12 @@ namespace AoC2019.Days
                 var xDist = a.X - station.X;
                 var yDist = a.Y - station.Y;
                 var angle = Math.Atan2(xDist, yDist);
-                return (X: a.X, Y: a.Y, Angle: angle, Dist: Math.Sqrt(xDist * xDist + yDist * yDist));
+                return (a.X, a.Y, Angle: angle, Dist: Math.Sqrt(xDist * xDist + yDist * yDist));
             }).ToLookup(a => a.Angle).OrderByDescending(a => a.Key).Select(a => a.OrderBy(b => b.Dist).ToQueue())
             .Repeat().SelectMany(EnumerableEx.DequeueOnce).Skip(199).Take(1).Select(a => a.X * 100 + a.Y).Single();
         }
 
-        private static int CalcVisible(List<(int X, int Y)> input, (int X, int Y) a)
+        private static int CalcVisible(IEnumerable<(int X, int Y)> input, (int X, int Y) a)
         {
             return input.Where(b => a != b).Select(b => Math.Atan2(a.Y - b.Y, a.X - b.X)).Distinct().Count();
         }
