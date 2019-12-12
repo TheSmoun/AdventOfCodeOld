@@ -80,4 +80,11 @@ namespace AoC2019.Tests
         protected override string ExpectedPart1Result => "1876";
         protected override string ExpectedPart2Result => "CGPJCGCL";
     }
+
+    [TestClass]
+    public sealed class Day12Tests : DayTestBase<Day12, Day12.Moon[], long>
+    {
+        protected override long ExpectedPart1Result => 8538;
+        protected override long ExpectedPart2Result => 506359021038056;
+    }
 }

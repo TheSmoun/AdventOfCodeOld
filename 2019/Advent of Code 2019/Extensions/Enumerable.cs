@@ -27,6 +27,12 @@ namespace AoC2019.Extensions
                 yield return start + i;
         }
 
+        public static IEnumerable<(T, T)> Pairs<T>(this IEnumerable<T> input)
+        {
+            var a = input as T[] ?? input.ToArray();
+            return a.SelectMany(x => a, (x, y) => (x, y)).Where(t => !ReferenceEquals(t.x, t.y));
+        }
+
         public static IntComputer ToIntComputer(this IEnumerable<long> memory, params long[] input)
         {
             return new IntComputer(memory, BlockingCollection(input));
