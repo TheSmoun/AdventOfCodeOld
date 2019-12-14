@@ -32,13 +32,15 @@ namespace AoC2019.Lib
                 {9, AdjustRelativeBase},
                 {99, Halt}
             };
+
             _input = input;
             _output = output;
+
+            Running = true;
         }
 
         public long Run()
         {
-            Running = true;
             int ip;
             var postIp = 0;
             do
@@ -47,6 +49,11 @@ namespace AoC2019.Lib
                 var (opCode, a, b, c) = ParseInstruction(_memory[ip]);
                 postIp = _instructions[opCode](ip, a, b, c);
             } while (ip != postIp);
+
+            lock (_output)
+            {
+                _output.CompleteAdding();
+            }
 
             Running = false;
             return LastOutput;
@@ -66,14 +73,20 @@ namespace AoC2019.Lib
 
         private int Input(int ip, int a, int b, int c)
         {
-            Store(_input.Take(), _memory[ip + 1], a);
+            lock (_input)
+            {
+                Store(_input.Take(), _memory[ip + 1], a);
+            }
             return ip + 2;
         }
 
         private int Output(int ip, int a, int b, int c)
         {
             LastOutput = Load(_memory[ip + 1], a);
-            _output?.Add(LastOutput);
+            lock (_output)
+            {
+                _output?.Add(LastOutput);
+            }
             return ip + 2;
         }
 

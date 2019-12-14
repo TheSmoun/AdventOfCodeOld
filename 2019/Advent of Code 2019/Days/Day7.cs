@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using AoC2019.Extensions;
 using AoC2019.Lib;
@@ -7,14 +6,9 @@ using MoreLinq;
 
 namespace AoC2019.Days
 {
-    public sealed class Day7 : DayBase<long[], long>
+    public sealed class Day7 : IntCodeDayBase<long>
     {
         public override string Name => "Day 7: Amplification Circuit";
-
-        public override long[] ParseInput(IEnumerable<string> lines)
-        {
-            return lines.Single().Split(",").Select(long.Parse).ToArray();
-        }
 
         public override long RunPart1(long[] input)
         {

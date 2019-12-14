@@ -8,7 +8,7 @@ namespace AoC2019
     public sealed class AdventOfCode
     {
         private static readonly IEnumerable<DayBase> Days = typeof(AdventOfCode).Assembly.GetTypes()
-            .Where(t => t.BaseType?.BaseType == typeof(DayBase))
+            .Where(t => !t.IsAbstract && typeof(DayBase).IsAssignableFrom(t))
             .OrderBy(t => int.Parse(t.Name.Substring(3)))
             .Select(t => Activator.CreateInstance(t) as DayBase);
 
