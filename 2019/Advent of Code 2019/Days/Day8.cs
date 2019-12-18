@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AoC2019.Extensions;
 using MoreLinq;
 
 namespace AoC2019.Days

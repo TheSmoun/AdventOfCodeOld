@@ -1,42 +1,23 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Linq;
 
 namespace AoC2019.Lib
 {
-    public abstract class IntComputerAccessory
+    public abstract class IntComputerAccessory : IntCodeRunnable
     {
         protected readonly IntComputer Computer;
-        protected readonly BlockingCollection<long> Input;
-        protected readonly BlockingCollection<long> Output;
 
-        protected IntComputerAccessory(IntComputer computer, BlockingCollection<long> input, BlockingCollection<long> output)
+        protected IntComputerAccessory(IntComputer computer, params long[] input) : base(input)
         {
             Computer = computer;
-            Input = input;
-            Output = output;
         }
 
         public void Run()
         {
-            while (RunLoop)
+            var input = new long[0];
+            while (!Computer.Halted)
             {
-                Loop();
+                input = Run(Computer.Run(input).ToArray()).ToArray();
             }
         }
-
-        protected bool RunLoop
-        {
-            get
-            {
-                if (!Computer.Running)
-                    return false;
-
-                lock (Input)
-                {
-                    return !Input.IsCompleted;
-                }
-            }
-        }
-
-        protected abstract void Loop();
     }
 }

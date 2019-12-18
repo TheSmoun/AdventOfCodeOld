@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using AoC2019.Days;
@@ -33,14 +32,9 @@ namespace AoC2019.Extensions
             return a.SelectMany(x => a, (x, y) => (x, y)).Where(t => !ReferenceEquals(t.x, t.y));
         }
 
-        public static IntComputer ToIntComputer(this IEnumerable<long> memory, params long[] input)
+        public static IntComputer ToIntComputer(this IEnumerable<long> memory)
         {
-            return new IntComputer(memory, BlockingCollection(input));
-        }
-
-        public static BlockingCollection<T> BlockingCollection<T>(params T[] input)
-        {
-            return new BlockingCollection<T>(new ConcurrentQueue<T>(input));
+            return new IntComputer(memory);
         }
 
         public static Queue<T> ToQueue<T>(this IEnumerable<T> input)
@@ -52,6 +46,33 @@ namespace AoC2019.Extensions
         {
             if (input.Count > 0)
                 yield return input.Dequeue();
+        }
+
+        public static void EnqueueAll<T>(this Queue<T> queue, IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                queue.Enqueue(item);
+            }
+        }
+
+        public static void Print<T>(this IEnumerable<T> input, ConsoleColor? color = null)
+        {
+            if (color.HasValue)
+                Console.ForegroundColor = color.Value;
+
+            var a = input as T[] ?? input.ToArray();
+            Console.Write("[");
+            for (var i = 0; i < a.Length; i++)
+            {
+                Console.Write(a[i]);
+                if (i < a.Length - 1)
+                    Console.Write(", ");
+            }
+            Console.WriteLine("]");
+
+            if (color.HasValue)
+                Console.ResetColor();
         }
 
         public static DayBase Day(this IEnumerable<DayBase> input, int number)

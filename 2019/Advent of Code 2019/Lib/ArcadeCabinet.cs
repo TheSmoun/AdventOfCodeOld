@@ -1,6 +1,6 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using AoC2019.Extensions;
 
 namespace AoC2019.Lib
 {
@@ -14,42 +14,25 @@ namespace AoC2019.Lib
 
         private readonly Dictionary<(int X, int Y), int> _tiles = new Dictionary<(int X, int Y), int>();
 
-        public ArcadeCabinet(IntComputer computer, BlockingCollection<long> input, BlockingCollection<long> output) : base(computer, input, output) { }
+        public ArcadeCabinet(IntComputer computer) : base(computer) { }
 
-        protected override void Loop()
+        public override IEnumerable<long> Run(params long[] input)
         {
-            while (RunInnerLoop)
+            var queue = input.ToQueue();
+            while (queue.Count > 0)
             {
-                lock (Input)
+                var (x, y, tileId) = ((int)queue.Dequeue(), (int)queue.Dequeue(), (int)queue.Dequeue());
+                if ((x, y) == (-1, 0))
                 {
-                    var (x, y, tileId) = ((int)Input.Take(), (int)Input.Take(), (int)Input.Take());
-
-                    if ((x, y) == (-1, 0))
-                    {
-                        Score = tileId;
-                    }
-                    else
-                    {
-                        _tiles[(x, y)] = tileId;
-                    }
+                    Score = tileId;
+                }
+                else
+                {
+                    _tiles[(x, y)] = tileId;
                 }
             }
 
-            lock (Output)
-            {
-                Output.Add(Ball.CompareTo(Paddle));
-            }
-        }
-
-        private bool RunInnerLoop
-        {
-            get
-            {
-                lock (Input)
-                {
-                    return RunLoop && Input.Count > 3;
-                }
-            }
+            yield return Ball.CompareTo(Paddle);
         }
 
         private int FindTile(int tile)

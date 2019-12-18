@@ -1,4 +1,5 @@
-﻿using AoC2019.Extensions;
+﻿using System.Linq;
+using AoC2019.Extensions;
 
 namespace AoC2019.Days
 {
@@ -8,12 +9,12 @@ namespace AoC2019.Days
 
         public override long RunPart1(long[] input)
         {
-            return input.ToIntComputer(1).Run();
+            return input.ToIntComputer().Run(1).Last();
         }
 
         public override long RunPart2(long[] input)
         {
-            return input.ToIntComputer(2).Run();
+            return input.ToIntComputer().Run(2).Last();
         }
     }
 }

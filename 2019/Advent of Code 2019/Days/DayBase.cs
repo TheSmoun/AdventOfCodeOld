@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using AoC2019.Extensions;
 using AoC2019.Lib;
 
@@ -105,22 +103,14 @@ namespace AoC2019.Days
     {
         protected TAccessory RunAccessory(IEnumerable<long> code, params long[] input)
         {
-            var accessory2Computer = EnumerableEx.BlockingCollection(input);
-            var computer2Accessory = EnumerableEx.BlockingCollection<long>();
-
-            var computer = new IntComputer(code, accessory2Computer, computer2Accessory);
-            var accessory = CreateAccessory(computer, computer2Accessory, accessory2Computer);
-
-            var thread = new Thread(() => computer.Run());
-            thread.Start();
-
+            var accessory = CreateAccessory(new IntComputer(code, input));
             accessory.Run();
             return accessory;
         }
 
-        protected TAccessory CreateAccessory(IntComputer computer, BlockingCollection<long> input, BlockingCollection<long> output)
+        protected TAccessory CreateAccessory(IntComputer computer)
         {
-            return Activator.CreateInstance(typeof(TAccessory), computer, input, output) as TAccessory;
+            return Activator.CreateInstance(typeof(TAccessory), computer) as TAccessory;
         }
     }
 }
