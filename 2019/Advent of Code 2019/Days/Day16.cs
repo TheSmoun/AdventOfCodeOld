@@ -17,18 +17,8 @@ namespace AoC2019.Days
 
         public override int RunPart1(int[] input)
         {
-            return FFT(input).Take(8).ToInt();
-        }
-
-        public override int RunPart2(int[] input)
-        {
-            return FFT(input.Repeat(10000).ToArray()).Skip(input.Take(7).ToInt()).Take(8).ToInt();
-        }
-
-        private static IEnumerable<int> FFT(int[] input)
-        {
             var basePattern = new[] { 0, 1, 0, -1 };
-            var patterns = input.Select((_, i) => basePattern.RepeatItems(i + 1).ToArray()).ToArray(); // this runs out of memory for part 2.
+            var patterns = input.Select((_, i) => basePattern.RepeatItems(i + 1).ToArray()).ToArray();
 
             for (var phase = 0; phase < 100; phase++)
             {
@@ -40,7 +30,23 @@ namespace AoC2019.Days
                 }).ToArray();
             }
 
-            return input;
+            return input.Take(8).ToInt();
+        }
+
+        public override int RunPart2(int[] input)
+        {
+            var messageOffset = input.Take(7).ToInt();
+            input = input.Repeat(10000).ToArray();
+
+            for (var phase = 0; phase < 100; phase++)
+            {
+                for (var i = input.Length - 2; i >= 0; i--)
+                {
+                    input[i] = (input[i] + input[i + 1]) % 10;
+                }
+            }
+
+            return input.Skip(messageOffset).Take(8).ToInt();
         }
     }
 }
