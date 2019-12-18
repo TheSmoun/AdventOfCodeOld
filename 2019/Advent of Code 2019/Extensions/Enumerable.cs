@@ -32,6 +32,17 @@ namespace AoC2019.Extensions
             return a.SelectMany(x => a, (x, y) => (x, y)).Where(t => !ReferenceEquals(t.x, t.y));
         }
 
+        public static IEnumerable<T> RepeatItems<T>(this IEnumerable<T> input, int times)
+        {
+            foreach (var item in input)
+            {
+                for (var i = 0; i < times; i++)
+                {
+                    yield return item;
+                }
+            }
+        }
+
         public static IntComputer ToIntComputer(this IEnumerable<long> memory)
         {
             return new IntComputer(memory);
@@ -54,6 +65,11 @@ namespace AoC2019.Extensions
             {
                 queue.Enqueue(item);
             }
+        }
+
+        public static int ToInt(this IEnumerable<int> input)
+        {
+            return int.Parse(string.Concat(input));
         }
 
         public static void Print<T>(this IEnumerable<T> input, ConsoleColor? color = null)
