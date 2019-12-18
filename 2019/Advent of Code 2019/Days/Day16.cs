@@ -28,12 +28,13 @@ namespace AoC2019.Days
         private static IEnumerable<int> FFT(int[] input)
         {
             var basePattern = new[] { 0, 1, 0, -1 };
+            var patterns = input.Select((_, i) => basePattern.RepeatItems(i + 1).ToArray()).ToArray(); // this runs out of memory for part 2.
 
             for (var phase = 0; phase < 100; phase++)
             {
                 input = input.Select((item, i) =>
                 {
-                    var pattern = basePattern.RepeatItems(i + 1).ToArray();
+                    var pattern = patterns[i];
                     var result = input.Select((t, j) => t * pattern[(j + 1) % pattern.Length]).Sum();
                     return Math.Abs(result) % 10;
                 }).ToArray();
