@@ -40,7 +40,7 @@ namespace AoC2019.Days
 
             for (var phase = 0; phase < 100; phase++)
             {
-                for (var i = input.Length - 2; i >= 0; i--)
+                for (var i = 0; i < input.Length - 1; i++)
                 {
                     input[i] = (input[i] + input[i + 1]) % 10;
                 }
