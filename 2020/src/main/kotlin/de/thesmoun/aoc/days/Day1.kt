@@ -4,12 +4,13 @@ class Day1 : Day<Collection<Int>, Int>("Day 1") {
 
     private val target = 2020
 
-    override fun parseInput(input: Collection<String>) = input.map { it.toInt() }.toSet()
+    override fun parseInput(input: Collection<String>) = input.map { it.toInt() }
 
     override fun runPart1(input: Collection<Int>): Int {
-        input.forEach {
+        val set = input.toHashSet()
+        set.forEach {
             val diff = target - it
-            if (input.contains(diff))
+            if (set.contains(diff))
                 return it * diff
         }
 
@@ -17,11 +18,16 @@ class Day1 : Day<Collection<Int>, Int>("Day 1") {
     }
 
     override fun runPart2(input: Collection<Int>): Int {
-        input.forEach { n0 ->
-            input.forEach { n1 ->
-                input.forEach { n2 ->
-                    if (n0 + n1 + n2 == target)
+        val array = input.toIntArray()
+        for (i in array.indices) {
+            val n0 = array[i]
+            for (j in i..array.lastIndex) {
+                val n1 = array[j]
+                for (k in j..array.lastIndex) {
+                    val n2 = array[k]
+                    if (n0 + n1 + n2 == target) {
                         return n0 * n1 * n2
+                    }
                 }
             }
         }
