@@ -21,9 +21,9 @@ class Day1 : Day<Collection<Int>, Int>("Day 1") {
         val array = input.toIntArray()
         for (i in array.indices) {
             val n0 = array[i]
-            for (j in i..array.lastIndex) {
+            for (j in (i + 1)..array.lastIndex) {
                 val n1 = array[j]
-                for (k in j..array.lastIndex) {
+                for (k in (j + 1)..array.lastIndex) {
                     val n2 = array[k]
                     if (n0 + n1 + n2 == target) {
                         return n0 * n1 * n2
