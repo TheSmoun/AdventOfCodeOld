@@ -16,18 +16,9 @@ class Day2Tests {
     fun parseInput_shouldReturnPasswordPolicies() {
         val input = Day2().parseInput(lines).toTypedArray()
         assertEquals(3, input.size)
-
-        val (passwordPolicy0, password0) = input[0]
-        assertEquals(Day2.PasswordPolicy(1, 3, 'a'), passwordPolicy0)
-        assertEquals("abcde", password0)
-
-        val (passwordPolicy1, password1) = input[1]
-        assertEquals(Day2.PasswordPolicy(1, 3, 'b'), passwordPolicy1)
-        assertEquals("cdefg", password1)
-
-        val (passwordPolicy2, password2) = input[2]
-        assertEquals(Day2.PasswordPolicy(2, 9, 'c'), passwordPolicy2)
-        assertEquals("ccccccccc", password2)
+        assertEquals(Day2.PasswordPolicy(1, 3, 'a', "abcde"), input[0])
+        assertEquals(Day2.PasswordPolicy(1, 3, 'b', "cdefg"), input[1])
+        assertEquals(Day2.PasswordPolicy(2, 9, 'c', "ccccccccc"), input[2])
     }
 
     @Test
