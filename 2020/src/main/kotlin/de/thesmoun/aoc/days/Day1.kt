@@ -1,6 +1,6 @@
 package de.thesmoun.aoc.days
 
-class Day1 : Day<Collection<Int>, Int>("Day 1") {
+class Day1 : Day<Collection<Int>, Int>("Day 1: Report Repair") {
 
     private val target = 2020
 
