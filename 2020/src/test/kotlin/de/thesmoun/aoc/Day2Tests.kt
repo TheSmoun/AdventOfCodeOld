@@ -23,17 +23,13 @@ class Day2Tests {
 
     @Test
     fun runPart1_shouldCheckForValidPasswords() {
-        val day = Day2()
-        val input = day.parseInput(lines)
-        val result = day.runPart1(input)
+        val result = Day2().testPart1(lines)
         assertEquals(2, result)
     }
 
     @Test
     fun runPart2_shouldCheckForValidPasswords() {
-        val day = Day2()
-        val input = day.parseInput(lines)
-        val result = day.runPart2(input)
+        val result = Day2().testPart2(lines)
         assertEquals(1, result)
     }
 }

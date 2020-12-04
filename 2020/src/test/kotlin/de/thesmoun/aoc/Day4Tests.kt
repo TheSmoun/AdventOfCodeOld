@@ -30,17 +30,13 @@ class Day4Tests {
 
     @Test
     fun runPart1_shouldCountValidPassports() {
-        val day = Day4()
-        val input = day.parseInput(lines)
-        val result = day.runPart1(input)
+        val result = Day4().testPart1(lines)
         assertEquals(2, result)
     }
 
     @Test
     fun runPart2_shouldCountValidFields() {
-        val day = Day4()
-        val input = day.parseInput(lines)
-        val result = day.runPart2(input)
+        val result = Day4().testPart2(lines)
         assertEquals(2, result)
     }
 }
