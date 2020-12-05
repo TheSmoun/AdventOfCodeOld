@@ -3,7 +3,7 @@ package de.thesmoun.aoc.days
 class Day5 : Day<Collection<Int>, Int>("Day 5: Binary Boarding") {
 
     override fun parseInput(input: Collection<String>) = input.map {
-        it.replace(Regex("F|L"), "0").replace(Regex("B|R"), "1").toInt(2)
+        it.replace(Regex("[FL]"), "0").replace(Regex("[BR]"), "1").toInt(2)
     }
 
     override fun runPart1(input: Collection<Int>) = input.maxOrNull() ?: error("")
