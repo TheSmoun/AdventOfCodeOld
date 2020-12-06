@@ -1,6 +1,6 @@
 package de.thesmoun.aoc.days
 
-import java.util.*
+import de.thesmoun.aoc.util.splitAt
 import kotlin.collections.HashMap
 
 class Day4 : Day<Collection<Map<String, String>>, Int>("Day 4: Passport Processing") {
@@ -16,23 +16,16 @@ class Day4 : Day<Collection<Map<String, String>>, Int>("Day 4: Passport Processi
     )
 
     override fun parseInput(input: Collection<String>): Collection<Map<String, String>> {
-        val passports = LinkedList<Map<String, String>>()
-        var passport = HashMap<String, String>()
-        passports.add(passport)
-
-        input.forEach {
-            if (it == "") {
-                passport = HashMap()
-                passports.add(passport)
-            } else {
-                it.split(' ').forEach { pair ->
+        return input.splitAt("").map {
+            val passport = HashMap<String, String>()
+            it.forEach { l ->
+                l.split(' ').forEach { pair ->
                     val split = pair.split(':')
                     passport[split[0]] = split[1]
                 }
             }
+            passport
         }
-
-        return passports
     }
 
     override fun runPart1(input: Collection<Map<String, String>>) = input.count {
