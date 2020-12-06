@@ -15,17 +15,15 @@ class Day4 : Day<Collection<Map<String, String>>, Int>("Day 4: Passport Processi
             Pair("pid", Regex("[0-9]{9}"))
     )
 
-    override fun parseInput(input: Collection<String>): Collection<Map<String, String>> {
-        return input.splitAt("").map {
-            val passport = HashMap<String, String>()
-            it.forEach { l ->
-                l.split(' ').forEach { pair ->
-                    val split = pair.split(':')
-                    passport[split[0]] = split[1]
-                }
+    override fun parseInput(input: Collection<String>) = input.splitAt("").map {
+        val passport = HashMap<String, String>()
+        it.forEach { l ->
+            l.split(' ').forEach { pair ->
+                val split = pair.split(':')
+                passport[split[0]] = split[1]
             }
-            passport
         }
+        passport
     }
 
     override fun runPart1(input: Collection<Map<String, String>>) = input.count {
