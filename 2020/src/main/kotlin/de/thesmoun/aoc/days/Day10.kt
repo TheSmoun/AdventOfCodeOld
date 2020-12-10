@@ -2,7 +2,7 @@ package de.thesmoun.aoc.days
 
 class Day10 : Day<List<Int>, Long>("Day 10: Adapter Array") {
 
-    override fun parseInput(input: Collection<String>) = input.map { it.toInt() }.sorted().toMutableList()
+    override fun parseInput(input: Collection<String>) = input.map { it.toInt() }.sorted()
 
     override fun runPart1(input: List<Int>): Long {
         var ones = 1L
