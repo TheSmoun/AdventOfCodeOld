@@ -23,13 +23,19 @@ class Day10Tests {
     @Test
     fun parseInput_ShouldReturnSortedList() {
         val input = Day10().parseInput(lines)
-        assertEquals(13, input.size)
-        assertEquals(1, input[1])
+        assertEquals(11, input.size)
+        assertEquals(1, input[0])
     }
 
     @Test
     fun runPart1_shouldReturnFactorOfDifferences() {
         val result = Day10().testPart1(lines)
         assertEquals(7 * 5, result)
+    }
+
+    @Test
+    fun runPart2_shouldReturnNumberOfPossibilities() {
+        val result = Day10().testPart2(lines)
+        assertEquals(8, result)
     }
 }

@@ -1,29 +1,26 @@
 package de.thesmoun.aoc.days
 
-class Day10 : Day<List<Int>, Int>("Day 10: Adapter Array") {
+class Day10 : Day<List<Int>, Long>("Day 10: Adapter Array") {
 
-    override fun parseInput(input: Collection<String>): List<Int> {
-        val list = input.map { it.toInt() }.sorted().toMutableList()
-        list.add(0, 0)
-        list.add(list.last() + 3)
-        return list
-    }
+    override fun parseInput(input: Collection<String>) = input.map { it.toInt() }.sorted().toMutableList()
 
-    override fun runPart1(input: List<Int>): Int {
-        var ones = 0
-        var threes = 0
-        input.windowed(2, 1).forEach {
-            if (it.size == 2) {
-                if (it[0] + 1 == it[1])
-                    ones++
-                else if (it[0] + 3 == it[1])
-                    threes++
-            }
+    override fun runPart1(input: List<Int>): Long {
+        var ones = 1L
+        var threes = 1L
+
+        input.reduce { acc, i ->
+            val diff = i - acc
+            if (diff == 1) ones++
+            else if (diff == 3) threes++
+            i
         }
+
         return ones * threes
     }
 
-    override fun runPart2(input: List<Int>): Int {
-        TODO("Not yet implemented")
+    override fun runPart2(input: List<Int>): Long {
+        val map = mutableMapOf(Pair(0, 1L))
+        input.forEach { map[it] = (map[it - 3] ?: 0) + (map[it - 2] ?: 0) + (map[it - 1] ?: 0) }
+        return map[input.last()]!!
     }
 }
