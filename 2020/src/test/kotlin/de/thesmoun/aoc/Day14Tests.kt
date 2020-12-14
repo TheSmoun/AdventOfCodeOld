@@ -14,6 +14,13 @@ class Day14Tests {
         mem[8] = 0
     """.trimIndent().lines()
 
+    private val lines2 = """
+        mask = 000000000000000000000000000000X1001X
+        mem[42] = 100
+        mask = 00000000000000000000000000000000X0XX
+        mem[26] = 1
+    """.trimIndent().lines()
+
     @Test
     fun parseInput_shouldReturnActions() {
         val input = Day14().parseInput(lines)
@@ -26,5 +33,11 @@ class Day14Tests {
     fun runPart1_shouldReturnSumOfMemoryValues() {
         val result = Day14().testPart1(lines)
         assertEquals(165, result)
+    }
+
+    @Test
+    fun runPart2_shouldReturnSumOfMemoryValues() {
+        val result = Day14().testPart2(lines2)
+        assertEquals(208, result)
     }
 }
