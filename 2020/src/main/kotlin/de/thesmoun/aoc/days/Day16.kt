@@ -39,9 +39,8 @@ class Day16 : Day<Day16.Input, Long>("Day 16: Ticket Translation") {
                 }
 
                 val possibleField = possibleFields.singleOrNull()
-                if (possibleField != null) {
+                if (possibleField != null)
                     fieldIndices[possibleField] = i
-                }
             }
         }
 
