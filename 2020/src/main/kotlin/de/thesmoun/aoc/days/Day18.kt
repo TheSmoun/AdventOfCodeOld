@@ -1,18 +1,72 @@
 package de.thesmoun.aoc.days
 
+import de.thesmoun.aoc.util.splitAt
+
 class Day18 : Day<Collection<String>, Long>("Day 18: Operation Order") {
 
     override fun parseInput(input: Collection<String>) = input
 
-    override fun runPart1(input: Collection<String>) = input.sumOf { Expression.parse(it).evaluate() }
+    override fun runPart1(input: Collection<String>) = input.sumOf { Expression.parse1(it).evaluate() }
 
-    override fun runPart2(input: Collection<String>): Long {
-        TODO("Not yet implemented")
-    }
+    override fun runPart2(input: Collection<String>) = input.sumOf { Expression.parse2(it).evaluate() }
 
     abstract class Expression {
         companion object {
-            fun parse(s: String) = parseInternal(s.replace(" ", "")).first
+            fun parse1(s: String) = parseInternal(s.replace(" ", "")).first
+            fun parse2(s: String) = parseInternal(preprocess(s.replace(" ", ""))).first
+
+            fun preprocess(s: String): String {
+                return (0 until s.count { it == '+' }).fold(s) { acc, i ->  encapsulatePlus(i, acc) }
+            }
+
+            fun encapsulatePlus(plusIndex: Int, s: String): String {
+                val index = s.withIndex().filter { it.value == '+' }[plusIndex].index
+                var expression = s
+
+                var level = 0
+                for (i in (index - 1) downTo 0) {
+                    val char = expression[i]
+                    if (char == ')') {
+                        level++
+                    } else if (char == '(') {
+                        level--
+                        if (level <= 0) {
+                            val (p0, p1) = expression.splitAt(i)
+                            expression = "$p0($p1"
+                            break
+                        }
+                    } else if (char.isDigit() && level == 0) {
+                        val (p0, p1) = expression.splitAt(i)
+                        expression = "$p0($p1"
+                        break
+                    }
+                }
+
+                expression = "(".repeat(level) + expression
+
+                level = 0
+                for (i in (index + 2)..expression.lastIndex) {
+                    val char = expression[i]
+                    if (char == '(') {
+                        level++
+                    } else if (char == ')') {
+                        level--
+                        if (level <= 0) {
+                            val (p0, p1) = expression.splitAt(i + 1)
+                            expression = "$p0)$p1"
+                            break
+                        }
+                    } else if (char.isDigit() && level == 0) {
+                        val (p0, p1) = expression.splitAt(i + 1)
+                        expression = "$p0)$p1"
+                        break
+                    }
+                }
+
+                expression += ")".repeat(level)
+
+                return expression
+            }
 
             private fun parseInternal(s: String): Pair<Expression, String> {
                 var input = s
