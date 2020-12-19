@@ -18,66 +18,60 @@ class Day19 : Day<Pair<Map<Int, String>, Collection<String>>, Int>("Day 19: Mons
         val map = input.first.toMutableMap()
         map[8] = "42 | 42 8"
         map[11] = "42 31 | 42 11 31"
-        TODO()
+        return runPart(map, input.second)
     }
 
     private fun runPart(map: Map<Int, String>, messages: Collection<String>): Int {
-        val possibilities = Rule.parse(map[0] ?: error(""), map).possibilities()
-        return messages.count { it in possibilities }
+        val rules = mutableMapOf<Int, Rule>()
+        rules.putAll(map.mapValues { Rule.parse(it.value, rules) })
+        return messages.filter { rules[0]!!.findMatches(it).filter { m -> m.isBlank() }.any() }.size
     }
 
     abstract class Rule {
         companion object {
-            fun parse(body: String, map: Map<Int, String>): Rule {
+            fun parse(rule: String, rules: Map<Int, Rule>): Rule {
                 return when {
-                    body.contains(" | ") -> {
-                        val left = parse(body.substringBefore(" | "), map)
-                        val right = parse(body.substringAfter(" | "), map)
-                        Branch(left, right)
+                    rule.contains('"') -> Literal(rule[1])
+                    rule.contains('|') -> {
+                        val (left, right) = rule.split(" | ")
+                        Branch(parse(left, rules), parse(right, rules))
                     }
-                    body.contains(' ') -> {
-                        val left = parse(body.substringBefore(' '), map)
-                        val right = parse(body.substringAfter(' '), map)
-                        Composite(left, right)
-                    }
-                    body.contains('"') -> {
-                        Literal(body.replace("\"", ""))
-                    }
-                    else -> {
-                        Proxy(parse(map[body.toInt()] ?: error(""), map))
-                    }
+                    else -> Composite(rule.split(' ').map { Proxy(it.toInt(), rules) })
                 }
             }
         }
 
-        abstract fun possibilities(): Set<String>
+        abstract fun findMatches(message: String): Sequence<String>
     }
 
-    class Branch(private val left: Rule, private val right: Rule) : Rule() {
-        override fun possibilities(): Set<String> {
-            val set = left.possibilities().toMutableSet()
-            set.addAll(right.possibilities())
-            return set
+    class Branch(private val left: Rule, private val right: Rule): Rule() {
+        override fun findMatches(message: String) = sequence {
+            yieldAll(left.findMatches(message))
+            yieldAll(right.findMatches(message))
         }
     }
 
-    class Composite(private val left: Rule, private val right: Rule) : Rule() {
-        override fun possibilities(): Set<String> {
-            val set = mutableSetOf<String>()
-            for (l in left.possibilities()) {
-                for (r in right.possibilities()) {
-                    set.add(l + r)
-                }
+    class Composite(private val rules: List<Rule>) : Rule() {
+        override fun findMatches(message: String) = findMatches(message, 0)
+
+        private fun findMatches(message: String, rule: Int): Sequence<String> {
+            if (rule >= rules.size)
+                return sequenceOf(message)
+            return rules[rule].findMatches(message).flatMap { findMatches(it, rule + 1) }
+        }
+    }
+
+    class Proxy(private val rule: Int, private val rules: Map<Int, Rule>) : Rule() {
+        override fun findMatches(message: String) = (rules[rule] ?: error("")).findMatches(message)
+    }
+
+    class Literal(private val char: Char) : Rule() {
+        override fun findMatches(message: String): Sequence<String> {
+            return when {
+                message.isEmpty() -> emptySequence()
+                message.first() == char -> sequenceOf(message.drop(1))
+                else -> emptySequence()
             }
-            return set
         }
-    }
-
-    class Proxy(private val rule: Rule) : Rule() {
-        override fun possibilities() = rule.possibilities()
-    }
-
-    class Literal(private val char: String) : Rule() {
-        override fun possibilities() = setOf(char)
     }
 }

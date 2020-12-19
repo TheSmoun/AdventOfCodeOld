@@ -16,9 +16,14 @@ class Day19Tests {
     """.trimIndent().lines()
 
     @Test
-    fun parseRule_shouldReturnRule() {
+    fun parseRule_shouldReturnRules() {
         val (map, _) = Day19().parseInput(lines)
-        val rule = Day19.Rule.parse(map[0] ?: error(""), map)
-        assertEquals(setOf("aab", "aba"), rule.possibilities())
+        val expectedMap = mapOf(
+                0 to "1 2",
+                1 to "\"a\"",
+                2 to "1 3 | 3 1",
+                3 to "\"b\""
+        )
+        assertEquals(expectedMap, map)
     }
 }
