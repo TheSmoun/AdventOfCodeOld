@@ -127,4 +127,10 @@ class Day20Tests {
         val result = Day20().testPart1(lines)
         assertEquals(20899048083289, result)
     }
+
+    @Test
+    fun runPart2_shouldCountNonSeaMonsterPositions() {
+        val result = Day20().testPart2(lines)
+        assertEquals(273, result)
+    }
 }
