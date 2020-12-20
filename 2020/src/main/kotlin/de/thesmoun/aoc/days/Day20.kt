@@ -172,8 +172,6 @@ class Day20 : Day<Collection<Day20.Tile>, Long>("Day 20: Jurassic Jigsaw") {
             pixels = pixels.map { offset + it }.toSet()
         }
 
-        operator fun get(x: Int, y: Int) = Pos(x, y) in pixels
-
         fun countAllSeaMonsters(): Int {
             repeat(4) {
                 repeat(2) {
