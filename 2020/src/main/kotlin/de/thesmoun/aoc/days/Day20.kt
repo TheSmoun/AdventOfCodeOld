@@ -189,9 +189,7 @@ class Day20 : Day<Collection<Day20.Tile>, Long>("Day 20: Jurassic Jigsaw") {
 
         private fun countSeaMonsters() = pixels.count { isSeaMonster(it) }
 
-        private fun isSeaMonster(pos: Pos): Boolean {
-            return SeaMonster.pixels().map { pos + it }.all { it in pixels }
-        }
+        private fun isSeaMonster(pos: Pos) = SeaMonster.pixels().map { pos + it }.all { it in pixels }
     }
 
     class SeaMonster {
