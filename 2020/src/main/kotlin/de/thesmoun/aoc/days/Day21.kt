@@ -19,11 +19,9 @@ class Day21 : Day<Collection<Day21.Food>, Any>("Day 21: Allergen Assessment") {
         val allergens = input.flatMap { it.allergens }.toMutableSet()
 
         while (allergens.isNotEmpty()) {
-            val allergensToRemove = mutableListOf<String>()
-            for (allergen in allergens) {
+            for (allergen in allergens.toList()) {
                 val possibleIngredients = input.filter { allergen in it.allergens }
-                        .map { it.ingredients }
-                        .reduce { acc, set -> (acc intersect set).toMutableSet() }
+                        .map { it.ingredients.toSet() }.reduce { acc, set -> (acc intersect set) }
                 if (possibleIngredients.size == 1) {
                     val ingredient = possibleIngredients.first()
                     map[allergen] = ingredient
@@ -31,10 +29,9 @@ class Day21 : Day<Collection<Day21.Food>, Any>("Day 21: Allergen Assessment") {
                         it.ingredients.remove(ingredient)
                         it.allergens.remove(allergen)
                     }
-                    allergensToRemove.add(allergen)
+                    allergens.remove(allergen)
                 }
             }
-            allergensToRemove.forEach { allergens.remove(it) }
         }
 
         return map
