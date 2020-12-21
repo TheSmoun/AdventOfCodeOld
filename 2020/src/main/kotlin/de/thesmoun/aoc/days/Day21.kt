@@ -9,10 +9,7 @@ class Day21 : Day<Collection<Day21.Food>, Any>("Day 21: Allergen Assessment") {
         return input.flatMap { it.ingredients }.size
     }
 
-    override fun runPart2(input: Collection<Food>): Any {
-        val map = runPart(input).toSortedMap()
-        return map.values.joinToString(",")
-    }
+    override fun runPart2(input: Collection<Food>) = runPart(input).toSortedMap().values.joinToString(",")
 
     private fun runPart(input: Collection<Food>): Map<String, String> {
         val map = mutableMapOf<String, String>()
