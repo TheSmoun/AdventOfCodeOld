@@ -21,8 +21,14 @@ class Day21Tests {
     }
 
     @Test
-    fun runPart1_shouldDoStuff() {
+    fun runPart1_shouldReturnCountOfIngredients() {
         val result = Day21().testPart1(lines)
         assertEquals(5, result)
+    }
+
+    @Test
+    fun runPart2_shouldReturnDangerousIngredients() {
+        val result = Day21().testPart2(lines)
+        assertEquals("mxmxvkd,sqjhc,fvjkl", result)
     }
 }
