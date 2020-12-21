@@ -5,6 +5,16 @@ class Day21 : Day<Collection<Day21.Food>, Any>("Day 21: Allergen Assessment") {
     override fun parseInput(input: Collection<String>) = input.map { Food.parse(it) }
 
     override fun runPart1(input: Collection<Food>): Any {
+        runPart(input)
+        return input.flatMap { it.ingredients }.size
+    }
+
+    override fun runPart2(input: Collection<Food>): Any {
+        val map = runPart(input).toSortedMap()
+        return map.values.joinToString(",")
+    }
+
+    private fun runPart(input: Collection<Food>): Map<String, String> {
         val map = mutableMapOf<String, String>()
         val allergens = input.flatMap { it.allergens }.toMutableSet()
 
@@ -27,11 +37,7 @@ class Day21 : Day<Collection<Day21.Food>, Any>("Day 21: Allergen Assessment") {
             allergensToRemove.forEach { allergens.remove(it) }
         }
 
-        return input.flatMap { it.ingredients }.size
-    }
-
-    override fun runPart2(input: Collection<Food>): Any {
-        TODO("Not yet implemented")
+        return map
     }
 
     data class Food(val ingredients: MutableSet<String>, val allergens: MutableSet<String>) {
