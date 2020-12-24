@@ -35,9 +35,9 @@ class Day24 : Day<List<List<Day24.Direction>>, Int>("Day 24: Lobby Layout") {
 
     override fun runPart2(input: List<List<Direction>>): Int {
         val allTiles = runPart(input)
-        repeat(100) {
-            allTiles.filter { it.isBlack }.forEach { it.neighbors().toList() }
+        allTiles.filter { it.isBlack }.forEach { it.neighbors().toList() }
 
+        repeat(100) {
             val tilesToFlip = mutableListOf<Tile>()
             for (tile in allTiles.toList()) {
                 val blackNeighbors = tile.neighbors().count { it.isBlack }
