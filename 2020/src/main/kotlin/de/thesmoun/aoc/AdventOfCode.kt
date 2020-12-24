@@ -1,6 +1,7 @@
 package de.thesmoun.aoc
 
 import de.thesmoun.aoc.days.AbstractDay
+import de.thesmoun.aoc.days.Day23
 import org.reflections.Reflections
 import java.lang.reflect.Modifier
 

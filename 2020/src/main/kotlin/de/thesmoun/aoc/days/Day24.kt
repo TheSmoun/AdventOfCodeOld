@@ -1,6 +1,6 @@
 package de.thesmoun.aoc.days
 
-class Day24 : Day<List<List<Day24.Direction>>, Any>("Day 24: Lobby Layout") {
+class Day24 : Day<List<List<Day24.Direction>>, Int>("Day 24: Lobby Layout") {
 
     override fun parseInput(input: Collection<String>) = input.map {
         var last = ""
@@ -31,18 +31,41 @@ class Day24 : Day<List<List<Day24.Direction>>, Any>("Day 24: Lobby Layout") {
         directions.toList()
     }
 
-    override fun runPart1(input: List<List<Direction>>): Any {
+    override fun runPart1(input: List<List<Direction>>) = runPart(input).count { it.isBlack }
+
+    override fun runPart2(input: List<List<Direction>>): Int {
+        val allTiles = runPart(input)
+        repeat(100) {
+            allTiles.filter { it.isBlack }.forEach { it.neighbors().toList() }
+
+            val tilesToFlip = mutableListOf<Tile>()
+            for (tile in allTiles.toList()) {
+                val blackNeighbors = tile.neighbors().count { it.isBlack }
+                if (tile.isBlack) {
+                    if (blackNeighbors == 0 || blackNeighbors > 2) {
+                        tilesToFlip.add(tile)
+                    }
+                } else {
+                    if (blackNeighbors == 2) {
+                        tilesToFlip.add(tile)
+                    }
+                }
+            }
+
+            tilesToFlip.forEach { it.flip() }
+        }
+
+        return allTiles.count { it.isBlack }
+    }
+
+    private fun runPart(input: List<List<Direction>>): Collection<Tile> {
         val allTiles = mutableMapOf<Pos, Tile>()
         val referenceTile = Tile(Pos(0, 0), allTiles)
         allTiles[referenceTile.pos] = referenceTile
-        for (instructions in input) {
-            instructions.fold(referenceTile) { tile, direction -> tile.getTile(direction) }.flipColor()
+        for (directions in input) {
+            directions.fold(referenceTile) { tile, direction -> tile.getTile(direction) }.flip()
         }
-        return allTiles.values.count { it.isBlack }
-    }
-
-    override fun runPart2(input: List<List<Direction>>): Any {
-        TODO("Not yet implemented")
+        return allTiles.values
     }
 
     data class Pos(val x: Int, val y: Int) {
@@ -76,7 +99,16 @@ class Day24 : Day<List<List<Day24.Direction>>, Any>("Day 24: Lobby Layout") {
         private val northWestTile: Tile by lazy { getOrCreateTile(pos, Direction.NORTH_WEST, allTiles) }
         private val northEastTile: Tile by lazy { getOrCreateTile(pos, Direction.NORTH_EAST, allTiles) }
 
-        fun flipColor() {
+        fun neighbors() = sequence {
+            yield(eastTile)
+            yield(southEastTile)
+            yield(southWestTile)
+            yield(westTile)
+            yield(northWestTile)
+            yield(northEastTile)
+        }
+
+        fun flip() {
             isBlack = !isBlack
         }
 

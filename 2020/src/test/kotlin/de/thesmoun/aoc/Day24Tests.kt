@@ -48,7 +48,7 @@ class Day24Tests {
                 Day24.Direction.EAST,
                 Day24.Direction.EAST
         )
-        instructions.fold(referenceTile) { tile, direction -> tile.getTile(direction) }.flipColor()
+        instructions.fold(referenceTile) { tile, direction -> tile.getTile(direction) }.flip()
         assertTrue { referenceTile.isBlack }
     }
 
@@ -56,5 +56,11 @@ class Day24Tests {
     fun runPart1_shouldReturnAmountOfBlackTiles() {
         val result = Day24().testPart1(lines)
         assertEquals(10, result)
+    }
+
+    @Test
+    fun runPart2_shouldReturnBlackTilesAfter100Days() {
+        val result = Day24().testPart2(lines)
+        assertEquals(2208, result)
     }
 }
