@@ -42,11 +42,11 @@ class Day24Tests {
         val referenceTile = Day24.Tile(Day24.Pos(0, 0), allTiles)
         allTiles[referenceTile.pos] = referenceTile
         val instructions = listOf(
-                Day24.Direction.NORTH_WEST,
-                Day24.Direction.WEST,
-                Day24.Direction.SOUTH_WEST,
-                Day24.Direction.EAST,
-                Day24.Direction.EAST
+                Day24.Direction.NW,
+                Day24.Direction.W,
+                Day24.Direction.SW,
+                Day24.Direction.E,
+                Day24.Direction.E
         )
         instructions.fold(referenceTile) { tile, direction -> tile.getTile(direction) }.flip()
         assertTrue { referenceTile.isBlack }
