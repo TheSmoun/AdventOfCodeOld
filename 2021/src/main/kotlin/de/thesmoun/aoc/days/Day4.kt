@@ -23,12 +23,20 @@ class Day4 : Day<Pair<List<Int>, List<Day4.Board>>, Int>("Day 4: Giant Squid") {
     }
 
     override fun runPart2(input: Pair<List<Int>, List<Board>>): Int {
-        TODO("Not yet implemented")
+        input.first.forEach { n ->
+            input.second.forEach {
+                val winningSum = it.mark(n)
+                if (winningSum != null && input.second.all { b -> b.hasWon })
+                    return winningSum * n
+            }
+        }
+        throw IllegalStateException()
     }
 
     class Board(private val positions: Map<Int, Pair<Int, Int>>,
                 private val numbers: Map<Pair<Int, Int>, Int>,
-                private val marked: MutableSet<Pair<Int, Int>> = mutableSetOf()) {
+                private val marked: MutableSet<Pair<Int, Int>> = mutableSetOf(),
+                var hasWon: Boolean = false) {
         companion object {
             fun parse(input: Collection<String>): Board {
                 val positions = mutableMapOf<Int, Pair<Int, Int>>()
@@ -48,6 +56,7 @@ class Day4 : Day<Pair<List<Int>, List<Day4.Board>>, Int>("Day 4: Giant Squid") {
             marked.add(position)
             val winningNumbers = checkIsWinner() ?: return null
             val unmarked = numbers.keys.filter { !marked.contains(it) }
+            hasWon = true
             return unmarked.sumOf { numbers[it]!! }
         }
 

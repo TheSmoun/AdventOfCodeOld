@@ -37,6 +37,6 @@ class Day4Tests {
     fun part2_shouldFindCorrectNumber() {
         val parsedInput = Day4().parseInput(input.lines())
         val result = Day4().runPart2(parsedInput)
-        assertEquals(230, result)
+        assertEquals(1924, result)
     }
 }
