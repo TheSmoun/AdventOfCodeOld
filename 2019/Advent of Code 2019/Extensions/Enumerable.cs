@@ -43,6 +43,20 @@ namespace AoC2019.Extensions
             }
         }
 
+        public static int IndexOf<T>(this IEnumerable<T> input, T item) where T : IEquatable<T>
+        {
+            var i = 0;
+            foreach (var it in input)
+            {
+                if (item.Equals(it))
+                    return i;
+
+                i++;
+            }
+
+            return -1;
+        }
+
         public static IntComputer ToIntComputer(this IEnumerable<long> memory)
         {
             return new IntComputer(memory);

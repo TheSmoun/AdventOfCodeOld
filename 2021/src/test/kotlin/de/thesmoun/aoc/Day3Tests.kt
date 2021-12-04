@@ -20,6 +20,6 @@ class Day3Tests {
     fun part2_shouldFindCorrectNumber() {
         val parsedInput = Day3().parseInput(input)
         val result = Day3().runPart2(parsedInput)
-        assertEquals(900, result)
+        assertEquals(230, result)
     }
 }

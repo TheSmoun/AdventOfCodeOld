@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AoC2019.Days;
+using AoC2019.Extensions;
 
 namespace AoC2019
 {
@@ -15,6 +16,7 @@ namespace AoC2019
         public static void Main(string[] args)
         {
             Days.Last().Run();
+            // Days.Day(17).Run();
         }
     }
 }
