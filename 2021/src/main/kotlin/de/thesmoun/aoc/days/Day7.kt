@@ -1,7 +1,6 @@
 package de.thesmoun.aoc.days
 
 import kotlin.math.abs
-import kotlin.math.min
 
 class Day7 : Day<Map<Int, Int>, Int>("Day 7: The Treachery of Whales") {
 
