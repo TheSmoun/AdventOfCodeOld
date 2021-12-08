@@ -28,6 +28,6 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
     fun part2_shouldFindCorrectNumber() {
         val parsedInput = Day8().parseInput(input.lines())
         val result = Day8().runPart2(parsedInput)
-        assertEquals(168, result)
+        assertEquals(61229, result)
     }
 }
