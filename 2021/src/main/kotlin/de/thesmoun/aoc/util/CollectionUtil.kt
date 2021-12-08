@@ -22,23 +22,3 @@ fun <T> Collection<T>.splitAt(item: T): List<Collection<T>> {
 
     return result
 }
-
-fun <T> Collection<T>.permutations(withSelf: Boolean = false): Collection<Pair<T, T>> {
-    val result = LinkedList<Pair<T, T>>()
-
-    forEachIndexed { i, ti ->
-        forEachIndexed { j, tj ->
-            if (withSelf || i != j) {
-                result.add(ti to tj)
-            }
-        }
-    }
-
-    return result
-}
-
-fun <T> MutableCollection<T>.removeSingle(predicate: (T) -> Boolean): T {
-    val value = single(predicate)
-    remove(value)
-    return value
-}
