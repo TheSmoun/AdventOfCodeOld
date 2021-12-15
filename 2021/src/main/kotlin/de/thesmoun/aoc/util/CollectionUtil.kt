@@ -22,3 +22,6 @@ fun <T> Collection<T>.splitAt(item: T): List<Collection<T>> {
 
     return result
 }
+
+fun <T, K> Grouping<T, K>.eachLongCount(): Map<K, Long> =
+    eachCount().entries.associate { it.key to it.value.toLong() }
