@@ -1,8 +1,8 @@
 package de.thesmoun.aoc.days
 
-class Day11 : Day<Map<Pair<Int, Int>, Int>, Int>("Day 11: Dumbo Octopus") {
+class Day11 : Day<MutableMap<Pair<Int, Int>, Int>, Int>("Day 11: Dumbo Octopus") {
 
-    override fun parseInput(input: Collection<String>): Map<Pair<Int, Int>, Int> {
+    override fun parseInput(input: Collection<String>): MutableMap<Pair<Int, Int>, Int> {
         val map = mutableMapOf<Pair<Int, Int>, Int>()
         input.forEachIndexed { j, s ->
             s.forEachIndexed { i, c ->
@@ -12,18 +12,14 @@ class Day11 : Day<Map<Pair<Int, Int>, Int>, Int>("Day 11: Dumbo Octopus") {
         return map
     }
 
-    override fun runPart1(input: Map<Pair<Int, Int>, Int>): Int {
-        val map = input.toMutableMap()
-        return (0 until 100).sumOf { step(map) }
-    }
+    override fun runPart1(input: MutableMap<Pair<Int, Int>, Int>) = (0 until 100).sumOf { step(input) }
 
-    override fun runPart2(input: Map<Pair<Int, Int>, Int>): Int {
-        val map = input.toMutableMap()
+    override fun runPart2(input: MutableMap<Pair<Int, Int>, Int>): Int {
         var steps = 0
         var lastFlashes = 0
 
-        while (lastFlashes != map.size) {
-            lastFlashes = step(map)
+        while (lastFlashes != input.size) {
+            lastFlashes = step(input)
             steps++
         }
 
