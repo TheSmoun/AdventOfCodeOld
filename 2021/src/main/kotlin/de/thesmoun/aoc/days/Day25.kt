@@ -54,21 +54,5 @@ class Day25 : Day<Day25.Input, Int>("Day 25: Sea Cucumber") {
 
             return moved
         }
-
-        override fun toString(): String {
-            val sb = StringBuilder()
-            repeat(height) { y ->
-                repeat(width) { x ->
-                    val b = cucumbers[x to y]
-                    if (b != null) {
-                        sb.append(if (b) '>' else 'v')
-                    } else {
-                        sb.append('.')
-                    }
-                }
-               sb.appendLine()
-            }
-            return sb.toString()
-        }
     }
 }
