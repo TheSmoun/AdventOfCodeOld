@@ -1,0 +1,12 @@
+version: '3.5'
+services:
+  db:
+    image: ${DOCKER_REGISTRY}/oracle-databases:21.3.0-xe
+    volumes:
+      - ./oradata:/opt/oracle/oradata
+    ports:
+      - 1521:1521
+      - 8080:8080
+      - 5500:5500
+    environment:
+      - ORACLE_PWD=${SYSTEM_PWD}
