@@ -1,2 +1,4 @@
 https://stackoverflow.com/questions/39493490/provide-static-ip-to-docker-containers-via-docker-compose
 https://cleandatabase.wordpress.com/2020/12/01/advent-of-code-in-sql-and-pl-sql-if-necessary/
+
+Tabelle mit Ergebnissen pro Tag und Ausführungszeit in ms.
