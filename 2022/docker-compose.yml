@@ -10,3 +10,22 @@ services:
       - 5500:5500
     environment:
       - ORACLE_PWD=${SYSTEM_PWD}
+    networks:
+      aoc:
+        ipv4_address: 10.10.0.2
+  files:
+    image: nginx:1.23.2-alpine
+    volumes:
+      - ./inputs:/usr/share/nginx/html
+    ports:
+      - 80:80
+    networks:
+      aoc:
+        ipv4_address: 10.10.0.3
+networks:
+  aoc:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.0.0/16
+          gateway: 10.10.0.1
