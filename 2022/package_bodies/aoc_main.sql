@@ -10,7 +10,7 @@ create or replace package body aoc_main as
         l_line number := 1;
         l_content varchar2(4000);
     begin
-        l_url := 'http://10.10.0.3/day' || to_char(p_day, 'fm00') || '.txt';
+        l_url := 'http://files/day' || to_char(p_day, 'fm00') || '.txt';
         l_request := utl_http.begin_request(l_url);
         l_response := utl_http.get_response(l_request);
 
@@ -33,6 +33,7 @@ create or replace package body aoc_main as
         end if;
 
         g_day := p_day;
+        aoc_log.init;
 
         delete from aoc_input
         where line is not null;
