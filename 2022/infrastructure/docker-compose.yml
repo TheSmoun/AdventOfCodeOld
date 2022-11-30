@@ -4,6 +4,7 @@ services:
     image: ${DOCKER_REGISTRY}/oracle-databases:21.3.0-xe
     volumes:
       - ./oradata:/opt/oracle/oradata
+      - ./setup:/opt/oracle/scripts/setup
     ports:
       - 1521:1521
       - 8080:8080
@@ -16,7 +17,7 @@ services:
   files:
     image: nginx:1.23.2-alpine
     volumes:
-      - ./inputs:/usr/share/nginx/html
+      - ./../inputs:/usr/share/nginx/html
     ports:
       - 80:80
     networks:
