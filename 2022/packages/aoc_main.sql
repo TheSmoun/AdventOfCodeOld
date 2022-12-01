@@ -13,10 +13,12 @@ create or replace package aoc_main as
 
     type t_input_table is table of t_input index by binary_integer;
 
-    function init(p_day in number)
+    function init(p_day in number,
+                  p_test in number default null)
     return t_input_table;
 
-    procedure init(p_day in number);
+    procedure init(p_day in number,
+                   p_test in number default null);
 
     procedure report_solution(p_part in number,
                               p_solution in number);

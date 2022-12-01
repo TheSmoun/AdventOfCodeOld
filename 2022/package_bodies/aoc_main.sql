@@ -2,7 +2,8 @@ create or replace package body aoc_main as
 
     g_day number;
 
-    procedure load_input(p_day in number)
+    procedure load_input(p_day in number,
+                         p_test in number)
     as
         l_url varchar2(256);
         l_request utl_http.req;
@@ -10,7 +11,7 @@ create or replace package body aoc_main as
         l_line number := 1;
         l_content varchar2(4000);
     begin
-        l_url := 'http://files/day' || to_char(p_day, 'fm00') || '.txt';
+        l_url := 'http://files/day' || to_char(p_day, 'fm00') || nvl2(p_test, '_test' || to_char(p_day, 'fm00'), '') || '.txt';
         l_request := utl_http.begin_request(l_url);
         l_response := utl_http.get_response(l_request);
 
@@ -24,7 +25,8 @@ create or replace package body aoc_main as
             utl_http.end_response(l_response);
     end load_input;
 
-    function init(p_day in number)
+    function init(p_day in number,
+                  p_test in number default null)
     return t_input_table as
         l_input t_input_table;
     begin
@@ -38,7 +40,7 @@ create or replace package body aoc_main as
         delete from aoc_input
         where line is not null;
 
-        load_input(p_day);
+        load_input(p_day, p_test);
 
         select line,
             content
@@ -49,11 +51,12 @@ create or replace package body aoc_main as
         return l_input;
     end init;
 
-    procedure init(p_day in number)
+    procedure init(p_day in number,
+                   p_test in number default null)
     as
         l_input t_input_table;
     begin
-        l_input := aoc_main.init(p_day);
+        l_input := aoc_main.init(p_day, p_test);
     end init;
 
     procedure report_solution(p_part in number,
