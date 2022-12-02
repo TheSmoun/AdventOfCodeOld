@@ -11,7 +11,7 @@ create or replace package body aoc_main as
         l_line number := 1;
         l_content varchar2(4000);
     begin
-        l_url := 'http://files/day' || to_char(p_day, 'fm00') || nvl2(p_test, '_test' || to_char(p_day, 'fm00'), '') || '.txt';
+        l_url := 'http://files/day' || to_char(p_day, 'fm00') || nvl2(p_test, '_test' || to_char(p_test, 'fm00'), '') || '.txt';
         l_request := utl_http.begin_request(l_url);
         l_response := utl_http.get_response(l_request);
 
