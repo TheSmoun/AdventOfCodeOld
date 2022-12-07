@@ -72,6 +72,13 @@ public static class EnumerableEx
         }
     }
 
+    public static bool AllDistinct<T>(this IEnumerable<T> enumerable)
+    {
+        var list = enumerable.ToList();
+        var count = list.Count;
+        return count == new HashSet<T>(list).Count;
+    }
+
     public static int ToInt(this IEnumerable<int> input)
     {
         return int.Parse(string.Concat(input));
