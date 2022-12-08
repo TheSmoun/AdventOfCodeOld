@@ -4,6 +4,15 @@ namespace Advent_of_Code_2022.Extensions;
 
 public static class EnumerableEx
 {
+    public static void ForEachIndexed<T>(this IEnumerable<T> enumerable, Action<T, int> action)
+    {
+        var i = 0;
+        foreach (var item in enumerable)
+        {
+            action(item, i++);
+        }
+    }
+
     public static IEnumerable<T> Sequence<T>(this T start, Func<T, T> f)
     {
         yield return start;
