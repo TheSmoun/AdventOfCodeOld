@@ -23,28 +23,13 @@ public class Day09 : DayBase<IEnumerable<Day09.Instruction>, int>
         });
     }
 
-    public override int RunPart1(IEnumerable<Instruction> input)
-    {
-        var head = new Vec2<int>();
-        var tail = new Vec2<int>();
-        var positions = new HashSet<Vec2<int>>();
-        
-        foreach (var instruction in input)
-        {
-            for (var i = 0; i < instruction.Amount; i++)
-            {
-                head += instruction.Direction;
-                tail = MoveRopePart(head, tail);
-                positions.Add(tail);
-            }
-        }
+    public override int RunPart1(IEnumerable<Instruction> input) => RunPart(input, 2);
 
-        return positions.Count;
-    }
+    public override int RunPart2(IEnumerable<Instruction> input) => RunPart(input, 10);
 
-    public override int RunPart2(IEnumerable<Instruction> input)
+    private static int RunPart(IEnumerable<Instruction> input, int ropeLength)
     {
-        var list = new LinkedList<Vec2<int>>(Enumerable.Range(0, 10).Select(_ => new Vec2<int>()));
+        var list = new LinkedList<Vec2<int>>(Enumerable.Range(0, ropeLength).Select(_ => new Vec2<int>()));
         var positions = new HashSet<Vec2<int>>();
 
         foreach (var instruction in input)
