@@ -34,11 +34,7 @@ public class Day09 : DayBase<IEnumerable<Day09.Instruction>, int>
             for (var i = 0; i < instruction.Amount; i++)
             {
                 head += instruction.Direction;
-                var diff = head - tail;
-                if (Math.Abs(diff.X) <= 1 && Math.Abs(diff.Y) <= 1)
-                    continue;
-
-                tail = new Vec2<int>(tail.X + Math.Sign(head.X - tail.X), tail.Y + Math.Sign(head.Y - tail.Y));
+                tail = MoveRopePart(head, tail);
                 positions.Add(tail);
             }
         }
@@ -48,7 +44,36 @@ public class Day09 : DayBase<IEnumerable<Day09.Instruction>, int>
 
     public override int RunPart2(IEnumerable<Instruction> input)
     {
-        throw new NotImplementedException();
+        var list = new LinkedList<Vec2<int>>(Enumerable.Range(0, 10).Select(_ => new Vec2<int>()));
+        var positions = new HashSet<Vec2<int>>();
+
+        foreach (var instruction in input)
+        {
+            for (var i = 0; i < instruction.Amount; i++)
+            {
+                var head = list.First() + instruction.Direction;
+                list.First!.Value = head;
+
+                var node = list.First;
+                while ((node = node?.Next) is not null)
+                {
+                    node.Value = MoveRopePart(node.Previous!.Value, node.Value);
+                }
+
+                positions.Add(list.Last!.Value);
+            }
+        }
+
+        return positions.Count;
+    }
+
+    private static Vec2<int> MoveRopePart(Vec2<int> prev, Vec2<int> curr)
+    {
+        var diff = prev - curr;
+        if (Math.Abs(diff.X) <= 1 && Math.Abs(diff.Y) <= 1)
+            return curr;
+
+        return new Vec2<int>(curr.X + Math.Sign(prev.X - curr.X), curr.Y + Math.Sign(prev.Y - curr.Y));
     }
 
     public record Instruction(Vec2<int> Direction, int Amount);
