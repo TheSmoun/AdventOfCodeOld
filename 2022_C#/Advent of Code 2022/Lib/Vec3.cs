@@ -23,6 +23,13 @@ public class Vec3<TNumber> : IEquatable<Vec3<TNumber>>,
         Z = z;
     }
 
+    public void Deconstruct(out TNumber x, out TNumber y, out TNumber z)
+    {
+        x = X;
+        y = Y;
+        z = Z;
+    }
+
     public bool Equals(Vec3<TNumber>? other)
     {
         if (ReferenceEquals(null, other))
