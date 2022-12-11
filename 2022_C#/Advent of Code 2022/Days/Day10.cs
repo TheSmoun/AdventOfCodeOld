@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Advent_of_Code_2022.Extensions;
 
 namespace Advent_of_Code_2022.Days;
 

@@ -1,4 +1,5 @@
-﻿using Advent_of_Code_2022.Days;
+﻿using System.Numerics;
+using Advent_of_Code_2022.Days;
 
 namespace Advent_of_Code_2022.Extensions;
 
@@ -11,6 +12,29 @@ public static class EnumerableEx
         {
             action(item, i++);
         }
+    }
+
+    public static TNumber Product<TNumber>(this IEnumerable<TNumber> enumerable)
+        where TNumber : INumber<TNumber>
+    {
+        return enumerable.Aggregate(TNumber.MultiplicativeIdentity, (current, n) => current * n);
+    }
+
+    public static TNumber Lcm<TNumber>(this IEnumerable<TNumber> enumerable)
+        where TNumber : INumber<TNumber>
+    {
+        TNumber LcmInternal(TNumber[] array, int index)
+        {
+            if (index == array.Length - 1)
+                return array[index];
+            
+            var a = array[index];
+            var b = LcmInternal(array, index + 1);
+            return a * b / a.Gcd(b);
+        }
+
+        var items = enumerable.ToArray();
+        return LcmInternal(items, 0);
     }
 
     public static IEnumerable<T> Sequence<T>(this T start, Func<T, T> f)
