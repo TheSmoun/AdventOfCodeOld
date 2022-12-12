@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using Advent_of_Code_2022.Days;
+using Advent_of_Code_2022.Lib;
 
 namespace Advent_of_Code_2022.Extensions;
 
@@ -35,6 +36,25 @@ public static class EnumerableEx
 
         var items = enumerable.ToArray();
         return LcmInternal(items, 0);
+    }
+
+    public static Grid<TGridItem> ToGrid<TGridItem>(this IEnumerable<string> enumerable,
+        Func<char, TGridItem> gridItemSelector)
+    {
+        var linesList = enumerable.ToList();
+        var rows = linesList.Count;
+        var cols = linesList.First().Length;
+
+        var grid = new Grid<TGridItem>(rows, cols);
+        linesList.ForEachIndexed((line, row) =>
+        {
+            line.ForEachIndexed((c, col) =>
+            {
+                grid[row, col] = gridItemSelector(c);
+            });
+        });
+
+        return grid;
     }
 
     public static IEnumerable<T> Sequence<T>(this T start, Func<T, T> f)

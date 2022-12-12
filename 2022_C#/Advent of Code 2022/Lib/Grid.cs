@@ -7,7 +7,7 @@ public class Grid<T>
     
     private readonly GridItem<T>[,] _items;
     
-    public Grid(int rows, int cols)
+    public Grid(int rows, int cols, T initialValue = default!)
     {
         RowCount = rows;
         ColCount = cols;
@@ -18,7 +18,7 @@ public class Grid<T>
         {
             for (var c = 0; c < cols; c++)
             {
-                _items[r, c] = new GridItem<T>(r, c, default!);
+                _items[r, c] = new GridItem<T>(r, c, initialValue);
             }
         }
 
@@ -111,72 +111,5 @@ public class Grid<T>
     {
         var item = _items[row, ColCount - 1];
         return item.ItemsInDirection(i => i.Left, true);
-    }
-
-    public class GridItem<TValue>
-    {
-        public int Row { get; }
-        public int Col { get; }
-        public TValue Value { get; set; }
-
-        public GridItem<TValue>? Top { get; set; }
-        public GridItem<TValue>? Right { get; set; }
-        public GridItem<TValue>? Bottom { get; set; }
-        public GridItem<TValue>? Left { get; set; }
-
-        public GridItem(int row, int col, TValue value)
-        {
-            Row = row;
-            Col = col;
-            Value = value;
-        }
-
-        public IEnumerable<GridItem<TValue>> Tops() => ItemsInDirection(i => i.Top, false);
-        public IEnumerable<GridItem<TValue>> Rights() => ItemsInDirection(i => i.Right, false);
-        public IEnumerable<GridItem<TValue>> Bottoms() => ItemsInDirection(i => i.Bottom, false);
-        public IEnumerable<GridItem<TValue>> Lefts() => ItemsInDirection(i => i.Left, false);
-
-        public IEnumerable<GridItem<TValue>> ItemsInDirection(Func<GridItem<TValue>, GridItem<TValue>?> nextItemSelector,
-            bool includeThis)
-        {
-            var item = this;
-
-            if (includeThis)
-            {
-                yield return item;
-            }
-            
-            item = nextItemSelector(item);
-            
-            while (item is not null)
-            {
-                yield return item;
-                item = nextItemSelector(item);
-            }
-        }
-
-        public bool Equals(GridItem<TValue>? other)
-        {
-            return other is not null && Row == other.Row && Col == other.Col;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            if (ReferenceEquals(null, obj))
-                return false;
-            if (ReferenceEquals(this, obj))
-                return true;
-            return obj.GetType() == GetType() && Equals((GridItem<TValue>) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Row, Col);
-        }
-
-        public override string ToString()
-        {
-            return $"[{Row}, {Col}]: {Value}";
-        }
     }
 }

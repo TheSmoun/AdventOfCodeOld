@@ -9,22 +9,7 @@ public class Day08 : DayBase<Grid<int>, int>
     public override string Name => "Day 8: Treetop Tree House";
 
     public override Grid<int> ParseInput(IEnumerable<string> lines)
-    {
-        var linesList = lines.ToList();
-        var rows = linesList.Count();
-        var cols = linesList.First().Length;
-
-        var grid = new Grid<int>(rows, cols);
-        linesList.ForEachIndexed((line, row) =>
-        {
-            line.ForEachIndexed((tree, col) =>
-            {
-                grid[row, col] = int.Parse(tree.ToString());
-            });
-        });
-
-        return grid;
-    }
+        => lines.ToGrid(c => int.Parse(c.ToString()));
 
     public override int RunPart1(Grid<int> input)
     {
