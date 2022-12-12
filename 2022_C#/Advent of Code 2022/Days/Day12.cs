@@ -20,13 +20,26 @@ public class Day12 : DayBase<Grid<int>, int>
 
     public override int RunPart1(Grid<int> input)
     {
-        var startItem = input.All().First(i => i.Value == S);
-        var endItem = input.All().First(i => i.Value == E);
-        var distances = new Grid<int>(input.RowCount, input.ColCount, int.MaxValue);
+        var start = input.All().First(i => i.Value == S);
+        var end = input.All().First(i => i.Value == E);
+        return FindShortestPath(input, start, end);
+    }
+
+    public override int RunPart2(Grid<int> input)
+    {
+        var end = input.All().First(i => i.Value == E);
+        return input.All()
+            .Where(i => i.Value == 1)
+            .Min(s => FindShortestPath(input, s, end));
+    }
+
+    private static int FindShortestPath(Grid<int> grid, GridItem<int> start, GridItem<int> end)
+    {
+        var distances = new Grid<int>(grid.RowCount, grid.ColCount, int.MaxValue);
 
         var queue = new Queue<GridItem<int>>();
-        queue.Enqueue(startItem);
-        distances[startItem.Row, startItem.Col] = 0;
+        queue.Enqueue(start);
+        distances[start.Row, start.Col] = 0;
 
         while (queue.Count > 0)
         {
@@ -46,11 +59,6 @@ public class Day12 : DayBase<Grid<int>, int>
             }
         }
 
-        return distances[endItem.Row, endItem.Col];
-    }
-
-    public override int RunPart2(Grid<int> input)
-    {
-        throw new NotImplementedException();
+        return distances[end.Row, end.Col];
     }
 }
