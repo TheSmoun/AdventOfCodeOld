@@ -60,16 +60,16 @@ public class Day13 : DayBase<IEnumerable<(Day13.IPacket, Day13.IPacket)>, int>
                     line = line[1..];
                     break;
                 default:
-                    var index = line.IndexOfAny(new char[] { ',', ']' });
+                    var index = line.IndexOfAny(new[] { ',', ']' });
                     if (index < 0)
                     {
-                        current.Add(new IntPacket(current, int.Parse(line)));
+                        current.Add(new IntPacket(int.Parse(line)));
                         line = string.Empty;
                     }
                     else
                     {
                         var number = line[..index];
-                        current.Add(new IntPacket(current, int.Parse(number)));
+                        current.Add(new IntPacket(int.Parse(number)));
                         line = line[index..];
                     }
                     break;
@@ -84,14 +84,11 @@ public class Day13 : DayBase<IEnumerable<(Day13.IPacket, Day13.IPacket)>, int>
         var outer = new ListPacket(null);
         var inner = new ListPacket(outer);
         outer.Add(inner);
-        inner.Add(new IntPacket(inner, number));
+        inner.Add(new IntPacket(number));
         return outer;
     }
     
-    public interface IPacket : IComparable<IPacket>
-    {
-        public ListPacket? Parent { get; }
-    }
+    public interface IPacket : IComparable<IPacket> { }
 
     public class ListPacket : List<IPacket>, IPacket
     {
@@ -132,10 +129,9 @@ public class Day13 : DayBase<IEnumerable<(Day13.IPacket, Day13.IPacket)>, int>
     
     public class IntPacket : IPacket
     {
-        public ListPacket? Parent { get; }
         public int Value { get; }
 
-        public IntPacket(ListPacket? parent, int value)
+        public IntPacket(int value)
         {
             Value = value;
         }
