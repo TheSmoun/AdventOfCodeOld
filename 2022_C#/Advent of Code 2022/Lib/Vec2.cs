@@ -57,6 +57,30 @@ public class Vec2<TNumber> : IEquatable<Vec2<TNumber>>,
         return $"X: {X}, Y: {Y}";
     }
 
+    public static Vec2<TNumber> Parse(string s)
+    {
+        var parts = s.Split(',');
+        var x = TNumber.Parse(parts[0], null);
+        var y = TNumber.Parse(parts[1], null);
+        return new Vec2<TNumber>(x, y);
+    }
+
+    public IEnumerable<Vec2<TNumber>> AllTo(Vec2<TNumber> end)
+    {
+        var xStart = X < end.X ? X : end.X;
+        var xEnd = X > end.X ? X : end.X;
+        var yStart = Y < end.Y ? Y : end.Y;
+        var yEnd = Y > end.Y ? Y : end.Y;
+
+        for (var x = xStart; x <= xEnd; x++)
+        {
+            for (var y = yStart; y <= yEnd; y++)
+            {
+                yield return new Vec2<TNumber>(x, y);
+            }
+        }
+    }
+
     public static Vec2<TNumber> operator +(Vec2<TNumber> left, Vec2<TNumber> right)
     {
         return new Vec2<TNumber>(left.X + right.X, left.Y + right.Y);

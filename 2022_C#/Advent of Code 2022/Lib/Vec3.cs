@@ -61,6 +61,15 @@ public class Vec3<TNumber> : IEquatable<Vec3<TNumber>>,
         return $"X: {X}, Y: {Y}, Z: {Z}";
     }
 
+    public static Vec3<TNumber> Parse(string s)
+    {
+        var parts = s.Split(',');
+        var x = TNumber.Parse(parts[0], null);
+        var y = TNumber.Parse(parts[1], null);
+        var z = TNumber.Parse(parts[2], null);
+        return new Vec3<TNumber>(x, y, z);
+    }
+
     public static Vec3<TNumber> operator +(Vec3<TNumber> left, Vec3<TNumber> right)
     {
         return new Vec3<TNumber>(left.X + right.X, left.Y + right.Y, left.Z + right.Z);
