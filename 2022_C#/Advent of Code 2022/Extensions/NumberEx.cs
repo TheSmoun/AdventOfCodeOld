@@ -4,6 +4,12 @@ namespace Advent_of_Code_2022.Extensions;
 
 public static class NumberEx
 {
+    public static (TNumber, TNumber) DiffMod<TNumber>(this TNumber a, TNumber b)
+        where TNumber : INumber<TNumber>, IModulusOperators<TNumber, TNumber, TNumber>
+    {
+        return (a / b, a.Mod(b));
+    }
+    
     public static TNumber Gcd<TNumber>(this TNumber a, TNumber b)
         where TNumber : INumber<TNumber>
     {
