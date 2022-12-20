@@ -10,7 +10,6 @@ public abstract class DayBase
 
 public abstract class DayBase<TInput, TResult> : DayBase
 {
-    private const long TicksPerMillisecond = 10000;
     private const string InputsFolderName = "Inputs";
 
     private readonly string _inputFileName;
@@ -49,7 +48,7 @@ public abstract class DayBase<TInput, TResult> : DayBase
         Console.WriteLine();
     }
 
-    private static (TParam, long) Measure<TParam>(Func<TParam> function)
+    private static (TParam, TimeSpan) Measure<TParam>(Func<TParam> function)
     {
         var stopwatch = new Stopwatch();
 
@@ -57,27 +56,31 @@ public abstract class DayBase<TInput, TResult> : DayBase
         var result = function();
         stopwatch.Stop();
 
-        return (result, stopwatch.ElapsedTicks);
+        return (result, stopwatch.Elapsed);
     }
 
-    private static string FormatTime(long ticks)
+    private static string FormatTime(TimeSpan time)
     {
-        if (ticks < TicksPerMillisecond)
-            return $"{ticks} ticks";
+        var ns = time.TotalNanoseconds;
+        if (ns < 1000)
+            return $"{ns} ns";
 
-        var ms = ticks / TicksPerMillisecond;
+        var ms = time.TotalMicroseconds;
+        if (ms < 1000)
+            return $"{ms} µs";
+        
+        ms = time.TotalMilliseconds;
         if (ms < 1000)
             return $"{ms} ms";
 
-        var ts = TimeSpan.FromMilliseconds(ms);
-        if (ts.TotalSeconds < 180)
-            return ts.TotalSeconds.ToString("##.### 's'");
+        if (time.TotalSeconds < 180)
+            return time.TotalSeconds.ToString("##.### 's'");
 
         // ReSharper disable once ConvertIfStatementToReturnStatement
-        if (ts.TotalMinutes < 180)
-            return ts.TotalMinutes.ToString("##.## 'min'");
+        if (time.TotalMinutes < 180)
+            return time.TotalMinutes.ToString("##.## 'min'");
 
-        return ts.TotalHours.ToString("##.## 'h'");
+        return time.TotalHours.ToString("##.## 'h'");
     }
 
     public abstract string Name { get; }
