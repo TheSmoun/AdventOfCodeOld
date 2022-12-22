@@ -159,7 +159,7 @@ public class Day22 : DayBase<Day22.Input, int>
                     break;
             }
         }
-        
+
         return positionGlobal.Y * 1000 + positionGlobal.X * 4 + Direction2Facing[direction];
     }
 
@@ -181,7 +181,7 @@ public class Day22 : DayBase<Day22.Input, int>
         public required bool Clockwise { get; init; }
     }
 
-    private class Cube
+    public class Cube
     {
         public Dictionary<int, CubeFace> Faces { get; } = new();
 
@@ -233,7 +233,7 @@ public class Day22 : DayBase<Day22.Input, int>
         }
     }
 
-    private abstract class CubeFace
+    public abstract class CubeFace
     {
         public int Id { get; }
 
