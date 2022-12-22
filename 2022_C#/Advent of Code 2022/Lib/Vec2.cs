@@ -81,6 +81,11 @@ public class Vec2<TNumber> : IEquatable<Vec2<TNumber>>,
         }
     }
 
+    public Vec2<TNumber> Rotate(bool clockwise)
+    {
+        return clockwise ? new Vec2<TNumber>(-Y, X) : new Vec2<TNumber>(Y, -X);
+    }
+
     public static Vec2<TNumber> operator +(Vec2<TNumber> left, Vec2<TNumber> right)
     {
         return new Vec2<TNumber>(left.X + right.X, left.Y + right.Y);
