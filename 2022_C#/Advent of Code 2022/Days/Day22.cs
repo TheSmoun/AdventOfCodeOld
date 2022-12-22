@@ -6,72 +6,6 @@ namespace Advent_of_Code_2022.Days;
 
 public class Day22 : DayBase<Day22.Input, int>
 {
-    private static readonly Dictionary<int, WithinFacePredicate> WithinFacePredicates = new()
-    {
-        { 1, pos => pos.X is >= 51 and <= 100 && pos.Y is >= 1 and <= 50 },
-        { 2, pos => pos.X is >= 1 and <= 50 && pos.Y is >= 101 and <= 150 },
-        { 3, pos => pos.X is >= 1 and <= 50 && pos.Y is >= 151 and <= 200 },
-        { 4, pos => pos.X is >= 51 and <= 100 && pos.Y is >= 51 and <= 100 },
-        { 5, pos => pos.X is >= 101 and <= 150 && pos.Y is >= 1 and <= 50 },
-        { 6, pos => pos.X is >= 51 and <= 100 && pos.Y is >= 101 and <= 150 }
-    };
-
-    private static readonly Dictionary<(int, Vec2<int>), int> NewFaces = new()
-    {
-        { (1, new Vec2<int>(1, 0)), 5 },
-        { (1, new Vec2<int>(0, 1)), 4 },
-        { (1, new Vec2<int>(-1, 0)), 2 },
-        { (1, new Vec2<int>(0, -1)), 3 },
-        { (2, new Vec2<int>(1, 0)), 6 },
-        { (2, new Vec2<int>(0, 1)), 3 },
-        { (2, new Vec2<int>(-1, 0)), 1 },
-        { (2, new Vec2<int>(0, -1)), 4 },
-        { (3, new Vec2<int>(1, 0)), 6 },
-        { (3, new Vec2<int>(0, 1)), 5 },
-        { (3, new Vec2<int>(-1, 0)), 1 },
-        { (3, new Vec2<int>(0, -1)), 2 },
-        { (4, new Vec2<int>(1, 0)), 5 },
-        { (4, new Vec2<int>(0, 1)), 6 },
-        { (4, new Vec2<int>(-1, 0)), 2 },
-        { (4, new Vec2<int>(0, -1)), 1 },
-        { (5, new Vec2<int>(1, 0)), 6 },
-        { (5, new Vec2<int>(0, 1)), 4 },
-        { (5, new Vec2<int>(-1, 0)), 1 },
-        { (5, new Vec2<int>(0, -1)), 3 },
-        { (6, new Vec2<int>(1, 0)), 5 },
-        { (6, new Vec2<int>(0, 1)), 3 },
-        { (6, new Vec2<int>(-1, 0)), 2 },
-        { (6, new Vec2<int>(0, -1)), 4 }
-    };
-    
-    private static readonly Dictionary<(int, int), (PositionTransformation, Vec2<int>)> FacingTransformations = new()
-    {
-        { (1, 5), (pos => new Vec2<int>(pos.X + 1, pos.Y), new Vec2<int>(1, 0)) },
-        { (1, 4), (pos => new Vec2<int>(pos.X, pos.Y + 1), new Vec2<int>(0, 1)) },
-        { (1, 2), (pos => new Vec2<int>(1, 150 - pos.Y), new Vec2<int>(1, 0)) },
-        { (1, 3), (pos => new Vec2<int>(1, 150 + (pos.X - 50)), new Vec2<int>(1, 0)) },
-        { (2, 6), (pos => new Vec2<int>(pos.X + 1, pos.Y), new Vec2<int>(1, 0)) },
-        { (2, 3), (pos => new Vec2<int>(pos.X, pos.Y + 1), new Vec2<int>(0, 1)) },
-        { (2, 1), (pos => new Vec2<int>(51, 150 - pos.Y), new Vec2<int>(1, 0)) },
-        { (2, 4), (pos => new Vec2<int>(51, 50 + pos.X), new Vec2<int>(1, 0)) },
-        { (3, 6), (pos => new Vec2<int>( pos.Y - 100, 150), new Vec2<int>(0, -1)) },
-        { (3, 5), (pos => new Vec2<int>(100 + pos.X, 1), new Vec2<int>(0, 1)) },
-        { (3, 1), (pos => new Vec2<int>(pos.Y - 100, 1), new Vec2<int>(0, 1)) },
-        { (3, 2), (pos => new Vec2<int>(pos.X, pos.Y - 1), new Vec2<int>(0, -1)) },
-        { (4, 5), (pos => new Vec2<int>(pos.Y + 50, 50), new Vec2<int>(0, -1)) },
-        { (4, 6), (pos => new Vec2<int>(pos.X, pos.Y + 1), new Vec2<int>(0, 1)) },
-        { (4, 2), (pos => new Vec2<int>(pos.Y - 50, 101), new Vec2<int>(0, 1)) },
-        { (4, 1), (pos => new Vec2<int>(pos.X, pos.Y - 1), new Vec2<int>(0, -1)) },
-        { (5, 6), (pos => new Vec2<int>(100, 150 - pos.Y), new Vec2<int>(-1, 0)) },
-        { (5, 4), (pos => new Vec2<int>(100, pos.X - 50), new Vec2<int>(-1, 0)) },
-        { (5, 1), (pos => new Vec2<int>(pos.X - 1, pos.Y), new Vec2<int>(-1, 0)) },
-        { (5, 3), (pos => new Vec2<int>(pos.X - 100, 200), new Vec2<int>(0, -1)) },
-        { (6, 5), (pos => new Vec2<int>(150, 150 - pos.Y), new Vec2<int>(-1, 0)) },
-        { (6, 3), (pos => new Vec2<int>(50, pos.X + 100), new Vec2<int>(-1, 0)) },
-        { (6, 2), (pos => new Vec2<int>(pos.X - 1, pos.Y), new Vec2<int>(-1, 0)) },
-        { (6, 4), (pos => new Vec2<int>(pos.X, pos.Y - 1), new Vec2<int>(0, -1)) }
-    };
-
     private static readonly Dictionary<Vec2<int>, int> Direction2Facing = new()
     {
         { new Vec2<int>(1, 0), 0 },
@@ -198,9 +132,10 @@ public class Day22 : DayBase<Day22.Input, int>
 
     public override int RunPart2(Input input)
     {
-        var position = Enumerable.MinBy(input.Map.Keys.Where(k => k.Y == 1), k => k.X)!;
-        var face = 1;
+        var face = new Cube().Faces[1];
+        var position = new Vec2<int>(1, 1);
         var direction = new Vec2<int>(1, 0);
+        var positionGlobal = new Vec2<int>(0, 0);
 
         foreach (var instruction in input.Instructions)
         {
@@ -212,22 +147,12 @@ public class Day22 : DayBase<Day22.Input, int>
                 case MoveInstruction move:
                     for (var i = 0; i < move.Amount; i++)
                     {
-                        var newPosition = position + direction;
-                        var newFace = WithinFacePredicates[face](newPosition) ? face : NewFaces[(face, direction)];
-                        var newDirection = direction;
-                        if (face != newFace)
-                        {
-                            (var transformation, newDirection) = FacingTransformations[(face, newFace)];
-                            newPosition = transformation(position);
-                        }
-
-                        if (!input.Map.ContainsKey(newPosition))
-                            throw new UnreachableException();
-                        
-                        if (!input.Map[newPosition])
+                        var (newFace, newPosition, newPositionGlobal, newDirection) = face.Move(position, direction);
+                        if (!input.Map[newPositionGlobal])
                             break;
 
                         position = newPosition;
+                        positionGlobal = newPositionGlobal;
                         direction = newDirection;
                         face = newFace;
                     }
@@ -235,7 +160,7 @@ public class Day22 : DayBase<Day22.Input, int>
             }
         }
         
-        return position.Y * 1000 + position.X * 4 + Direction2Facing[direction];
+        return positionGlobal.Y * 1000 + positionGlobal.X * 4 + Direction2Facing[direction];
     }
 
     public class Input
@@ -256,7 +181,149 @@ public class Day22 : DayBase<Day22.Input, int>
         public required bool Clockwise { get; init; }
     }
 
-    private delegate Vec2<int> PositionTransformation(Vec2<int> position);
+    private class Cube
+    {
+        public Dictionary<int, CubeFace> Faces { get; } = new();
 
-    private delegate bool WithinFacePredicate(Vec2<int> position);
+        public Cube()
+        {
+            var face1 = new CubeFace12(1, 50, 0);
+            var face2 = new CubeFace12(2, 0, 100);
+            var face3 = new CubeFace34(3, 0, 150);
+            var face4 = new CubeFace34(4, 50, 50);
+            var face5 = new CubeFace56(5, 100, 0);
+            var face6 = new CubeFace56(6, 50, 100);
+            
+            Faces.Add(face1.Id, face1);
+            Faces.Add(face2.Id, face2);
+            Faces.Add(face3.Id, face3);
+            Faces.Add(face4.Id, face4);
+            Faces.Add(face5.Id, face5);
+            Faces.Add(face6.Id, face6);
+
+            face1.Right = face5;
+            face1.Down = face4;
+            face1.Left = face2;
+            face1.Up = face3;
+
+            face2.Right = face6;
+            face2.Down = face3;
+            face2.Left = face1;
+            face2.Up = face4;
+
+            face3.Right = face6;
+            face3.Down = face5;
+            face3.Left = face1;
+            face3.Up = face2;
+
+            face4.Right = face5;
+            face4.Down = face6;
+            face4.Left = face2;
+            face4.Up = face1;
+
+            face5.Right = face6;
+            face5.Down = face4;
+            face5.Left = face1;
+            face5.Up = face3;
+
+            face6.Right = face5;
+            face6.Down = face3;
+            face6.Left = face2;
+            face6.Up = face4;
+        }
+    }
+
+    private abstract class CubeFace
+    {
+        public int Id { get; }
+
+        public CubeFace Right { get; set; } = default!;
+        public CubeFace Down { get; set; } = default!;
+        public CubeFace Left { get; set; } = default!;
+        public CubeFace Up { get; set; } = default!;
+
+        protected abstract Vec2<int> DirectionRight { get; }
+        protected abstract Vec2<int> DirectionDown { get; }
+        protected abstract Vec2<int> DirectionLeft { get; }
+        protected abstract Vec2<int> DirectionUp { get; }
+
+        private readonly Vec2<int> _shift;
+
+        protected CubeFace(int id, int xShift, int yShift)
+        {
+            Id = id;
+            _shift = new Vec2<int>(xShift, yShift);
+        }
+
+        public (CubeFace, Vec2<int>, Vec2<int>, Vec2<int>) Move(Vec2<int> position, Vec2<int> direction)
+        {
+            var newPosition = position + direction;
+
+            CubeFace newFace;
+            Vec2<int> newDirection;
+
+            if (newPosition.X > 50)
+                (newFace, newPosition, newDirection) = (Right, MoveRight(position), DirectionRight);
+            else if (newPosition.Y > 50)
+                (newFace, newPosition, newDirection) = (Down, MoveDown(position), DirectionDown);
+            else if (newPosition.X < 1)
+                (newFace, newPosition, newDirection) = (Left, MoveLeft(position), DirectionLeft);
+            else if (newPosition.Y < 1)
+                (newFace, newPosition, newDirection) = (Up, MoveUp(position), DirectionUp);
+            else
+                (newFace, newDirection) = (this, direction);
+
+            return (newFace, newPosition, newPosition + _shift, newDirection);
+        }
+
+        protected abstract Vec2<int> MoveRight(Vec2<int> pos);
+        protected abstract Vec2<int> MoveDown(Vec2<int> pos);
+        protected abstract Vec2<int> MoveLeft(Vec2<int> pos);
+        protected abstract Vec2<int> MoveUp(Vec2<int> pos);
+    }
+
+    private class CubeFace12 : CubeFace
+    {
+        protected override Vec2<int> DirectionRight => new(1, 0);
+        protected override Vec2<int> DirectionDown => new(0, 1);
+        protected override Vec2<int> DirectionLeft => new(1, 0);
+        protected override Vec2<int> DirectionUp => new(1, 0);
+
+        public CubeFace12(int id, int xShift, int yShift) : base(id, xShift, yShift) { }
+
+        protected override Vec2<int> MoveRight(Vec2<int> pos) => new(1, pos.Y);
+        protected override Vec2<int> MoveDown(Vec2<int> pos) => new(pos.X, 1);
+        protected override Vec2<int> MoveLeft(Vec2<int> pos) => new(1, 51 - pos.Y);
+        protected override Vec2<int> MoveUp(Vec2<int> pos) => new(1, pos.X);
+    }
+
+    private class CubeFace34 : CubeFace
+    {
+        protected override Vec2<int> DirectionRight => new(0, -1);
+        protected override Vec2<int> DirectionDown => new(0, 1);
+        protected override Vec2<int> DirectionLeft => new(0, 1);
+        protected override Vec2<int> DirectionUp => new(0, -1);
+
+        public CubeFace34(int id, int xShift, int yShift) : base(id, xShift, yShift) { }
+        
+        protected override Vec2<int> MoveRight(Vec2<int> pos) => new(pos.Y, 50);
+        protected override Vec2<int> MoveDown(Vec2<int> pos) => new(pos.X, 1);
+        protected override Vec2<int> MoveLeft(Vec2<int> pos) => new(pos.Y, 1);
+        protected override Vec2<int> MoveUp(Vec2<int> pos) => new(pos.X, 50);
+    }
+
+    private class CubeFace56 : CubeFace
+    {
+        protected override Vec2<int> DirectionRight => new(-1, 0);
+        protected override Vec2<int> DirectionDown => new(-1, 0);
+        protected override Vec2<int> DirectionLeft => new(-1, 0);
+        protected override Vec2<int> DirectionUp => new(0, -1);
+
+        public CubeFace56(int id, int xShift, int yShift) : base(id, xShift, yShift) { }
+        
+        protected override Vec2<int> MoveRight(Vec2<int> pos) => new(50, 51 - pos.Y);
+        protected override Vec2<int> MoveDown(Vec2<int> pos) => new(50, pos.X);
+        protected override Vec2<int> MoveLeft(Vec2<int> pos) => new(50, pos.Y);
+        protected override Vec2<int> MoveUp(Vec2<int> pos) => new(pos.X, 50);
+    }
 }
