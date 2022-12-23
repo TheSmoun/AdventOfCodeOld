@@ -5,7 +5,8 @@ namespace Advent_of_Code_2022.Lib;
 public class Vec2<TNumber> : IEquatable<Vec2<TNumber>>,
     IAdditionOperators<Vec2<TNumber>, Vec2<TNumber>, Vec2<TNumber>>,
     IAdditiveIdentity<Vec2<TNumber>, Vec2<TNumber>>,
-    ISubtractionOperators<Vec2<TNumber>, Vec2<TNumber>, Vec2<TNumber>>
+    ISubtractionOperators<Vec2<TNumber>, Vec2<TNumber>, Vec2<TNumber>>,
+    IEqualityOperators<Vec2<TNumber>, Vec2<TNumber>, bool>
     where TNumber : INumber<TNumber>
 {
     public TNumber X { get; }
@@ -84,6 +85,26 @@ public class Vec2<TNumber> : IEquatable<Vec2<TNumber>>,
     public Vec2<TNumber> Rotate(bool clockwise)
     {
         return clockwise ? new Vec2<TNumber>(-Y, X) : new Vec2<TNumber>(Y, -X);
+    }
+
+    public static bool operator ==(Vec2<TNumber>? left, Vec2<TNumber>? right)
+    {
+        if (left is null && right is null)
+            return true;
+        if (left is not null ^ right is not null)
+            return false;
+
+        return left!.X == right!.X && left.Y == right.Y;
+    }
+
+    public static bool operator !=(Vec2<TNumber>? left, Vec2<TNumber>? right)
+    {
+        if (left is null && right is null)
+            return false;
+        if (left is not null ^ right is not null)
+            return true;
+
+        return left!.X != right!.X || left.Y != right.Y;
     }
 
     public static Vec2<TNumber> operator +(Vec2<TNumber> left, Vec2<TNumber> right)

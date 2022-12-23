@@ -5,7 +5,8 @@ namespace Advent_of_Code_2022.Lib;
 public class Vec3<TNumber> : IEquatable<Vec3<TNumber>>,
     IAdditionOperators<Vec3<TNumber>, Vec3<TNumber>, Vec3<TNumber>>,
     IAdditiveIdentity<Vec3<TNumber>, Vec3<TNumber>>,
-    ISubtractionOperators<Vec3<TNumber>, Vec3<TNumber>, Vec3<TNumber>>
+    ISubtractionOperators<Vec3<TNumber>, Vec3<TNumber>, Vec3<TNumber>>,
+    IEqualityOperators<Vec3<TNumber>, Vec3<TNumber>, bool>
     where TNumber : INumber<TNumber>
 {
     public TNumber X { get; }
@@ -68,6 +69,26 @@ public class Vec3<TNumber> : IEquatable<Vec3<TNumber>>,
         var y = TNumber.Parse(parts[1], null);
         var z = TNumber.Parse(parts[2], null);
         return new Vec3<TNumber>(x, y, z);
+    }
+
+    public static bool operator ==(Vec3<TNumber>? left, Vec3<TNumber>? right)
+    {
+        if (left is null && right is null)
+            return true;
+        if (left is not null ^ right is not null)
+            return false;
+        
+        return left!.X == right!.X && left.Y == right.Y && left.Z == right.Z;
+    }
+
+    public static bool operator !=(Vec3<TNumber>? left, Vec3<TNumber>? right)
+    {
+        if (left is null && right is null)
+            return false;
+        if (left is not null ^ right is not null)
+            return true;
+        
+        return left!.X != right!.X || left.Y != right.Y || left.Z != right.Z;
     }
 
     public static Vec3<TNumber> operator +(Vec3<TNumber> left, Vec3<TNumber> right)
