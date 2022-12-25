@@ -13,9 +13,7 @@ public class Day25 : DayBase<IEnumerable<long>, string>
         => LongToStafu(input.Sum());
 
     public override string RunPart2(IEnumerable<long> input)
-    {
-        return "Merry Christmas";
-    }
+        => "Merry Christmas";
 
     private static long StafuToLong(string stafu)
     {
